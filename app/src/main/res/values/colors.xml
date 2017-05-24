@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- login-->
+    <color name="bg_login">#1dd708</color>
+    <!--页面背景的颜色-->
+    <color name="colorPageBg">#f2f4f5</color>
+
+    <color name="colorWhite">#ffffffff</color>
+
+    <!--tab标签栏文字的颜色-->
+    <color name="colorTabText">#585858</color>
+
+    <!-- 主题颜色-->
+    <color name="colorTheme">#027DE5</color>
+    <!--正文文字颜色-->
+    <color name="colorContent">#ff333333</color>
+
+    <color name="colorTheme_light">#029de5</color>
+
+    <!--水波纹或5.0以下选择器颜色-->
+    <color name="tabBackground">#777D7D7D</color>
+    <!--通用灰色-->
+    <color name="gray_common">#777D7D7D</color>
+    <color name="light_gray">#77eae7e7</color>
+
+    <!--item的5.0一下版本选择器颜色-->
+    <color name="itemLowBackground">#d9d9d9</color>
+
+    <!-- 下拉加载使用字体颜色-->
+    <color name="colorTitle">#666</color>
+
+</resources>

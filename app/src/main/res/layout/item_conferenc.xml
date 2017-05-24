@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="bean"
+            type="com.linzhi.isis.bean.conference.ConferenceDetailBean"/>
+    </data>
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/ll_item_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
+        <!-- android:layout_width="227dp"
+                    android:layout_height="180dp"-->
+        <ImageView
+            android:id="@+id/img_conference"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:showConferenceImg="@{bean.fileUrl}"/>
+
+        <!-- 会议主题-->
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/img_conference"
+            android:layout_alignStart="@+id/img_conference"
+            android:layout_below="@+id/img_conference"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:paddingLeft="2dp"
+            android:text="@{bean.conferenceName}"
+            android:textColor="@color/colorTabText"
+            android:textSize="13dp"/>
+
+        <!-- 会议人数-->
+        <TextView
+            android:id="@+id/tv_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/img_conference"
+            android:layout_alignStart="@+id/img_conference"
+            android:layout_below="@+id/tv_title"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="7dp"
+            android:drawableLeft="@mipmap/con_num"
+            android:drawablePadding="7dp"
+            android:gravity="center_vertical|left"
+            android:padding="5dp"
+            android:paddingLeft="2dp"
+            android:text="@{bean.numParticipant}"
+            android:textColor="@color/colorTabText"
+            android:textSize="12dp"/>
+
+        <!-- 时间-->
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/img_conference"
+            android:layout_alignStart="@+id/img_conference"
+            android:layout_below="@+id/tv_number"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="7dp"
+            android:drawableLeft="@mipmap/con_time"
+            android:drawablePadding="7dp"
+            android:gravity="center_vertical|left"
+            android:padding="5dp"
+            android:paddingLeft="2dp"
+            android:text="@{bean.beginTime}"
+            android:textColor="@color/colorTabText"
+            android:textSize="12dp"/>
+
+        <!-- 地点-->
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/img_conference"
+            android:layout_alignStart="@+id/img_conference"
+            android:layout_below="@+id/tv_time"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="7dp"
+            android:drawableLeft="@mipmap/con_address"
+            android:drawablePadding="7dp"
+            android:gravity="center_vertical|left"
+            android:padding="5dp"
+            android:paddingLeft="2dp"
+            android:text="@{bean.beginTime}"
+            android:textColor="@color/colorTabText"
+            android:textSize="12dp"/>
+    </RelativeLayout>
+
+</layout>

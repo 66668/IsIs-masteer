@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/linearlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    android:tag="layout/activity_main_0"
+                    tools:context="com.linzhi.iss.ui.MainActivity">
+
+        <RelativeLayout
+            android:id="@+id/topbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/colorTheme"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="24dp"
+                android:src="@mipmap/icon_back"/>
+
+            <TextView
+                android:id="@+id/tv_quit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="24dp"
+                android:drawableLeft="@mipmap/quit"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:text="退出"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/common_textSize_default16"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/topbar"
+            android:orientation="horizontal">
+
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorTheme"
+                app:contentInsetStart="0.0dp"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ToolbarStyle">
+
+                <ScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:orientation="vertical"
+                        android:theme="@style/AppTheme">
+
+                        <ImageView
+                            android:id="@+id/iv_title_regist"
+                            android:layout_width="55dp"
+                            android:layout_height="75dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="10dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:drawablePadding="5dp"
+                            android:src="@mipmap/toolbar_regist"
+                            />
+
+                        <ImageView
+                            android:id="@+id/iv_title_sign"
+                            android:layout_width="55dp"
+                            android:layout_height="75dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="10dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@mipmap/toolbar_signin"/>
+
+                        <ImageView
+                            android:id="@+id/iv_title_three"
+                            android:layout_width="55dp"
+                            android:layout_height="75dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="10dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@mipmap/toolbar_regist"/>
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </android.support.v7.widget.Toolbar>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/vp_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite"
+                    android:descendantFocusability="blocksDescendants"/>
+            </FrameLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</layout>
+

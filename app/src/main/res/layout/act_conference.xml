@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- RecyclerView+SwpieRefreshLayout实现下拉刷新效果 -->
+
+
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+
+        android:id="@+id/scrl_conference"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <android.support.v7.widget.RecyclerView
+            android:background="@android:color/darker_gray"
+            android:id="@+id/xrv_conference"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+</layout>

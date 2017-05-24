@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/activity_transition"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    tools:context="com.linzhi.iss.ui.WelcomeActivity">
+
+        <TextView
+            android:id="@+id/tv_jump"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/shape_jump"
+            android:gravity="center"
+            android:text="跳过"
+            android:textColor="#fff"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/defult_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="150dp"
+            android:background="@mipmap/logo"/>
+
+        <ImageView
+            android:id="@+id/default_content"
+            android:layout_width="wrap_content"
+            android:background="@mipmap/welcome_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+</layout>

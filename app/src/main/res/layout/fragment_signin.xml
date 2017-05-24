@@ -1,0 +1,415 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<com.example.jingbin.cloudreader.view.sliding.SlidingLayout xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/slidingLayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--app:background_view="@layout/sliding_view_bg"-->
+    <!--app:sliding_mode="top"-->
+    <!--app:top_max="200dp">-->
+    <!--app:sliding_mode="both" 上下均显示-->
+    <!--app:sliding_pointer_mode="more"-->
+
+    <!--为了出现下拉阴影效果（加了上面的控件后就没有了）-->
+    <LinearLayout
+
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal"
+        android:scrollbarSize="4dp"
+        android:scrollbarThumbVertical="@color/tabBackground"
+        android:scrollbars="vertical"
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
+
+        <com.linzhi.isis.xrecyclerview.XRecyclerView
+            android:id="@+id/list_one"
+            android:layout_width="475dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray_common"/>
+        <!-- item详情布局-->
+        <ScrollView
+            android:id="@+id/scrollView_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <!-- 图片-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:background="@color/gray_common">
+
+                    <ImageView
+                        android:id="@+id/photo_img"
+                        android:layout_width="170dp"
+                        android:layout_height="170dp"
+                        android:layout_centerInParent="true"
+                        android:src="@mipmap/default_photo"/>
+
+                    <TextView
+                        android:id="@+id/tv_detail_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/photo_img"
+                        android:layout_alignRight="@+id/photo_img"
+                        android:layout_below="@+id/photo_img"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="姓名"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14dp"/>
+                </RelativeLayout>
+                <!-- 手机号-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_phone"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="手机号"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:padding="5dp"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+                <!-- 微信-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_weixin"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="微信"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:padding="5dp"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+                <!-- 邮箱-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_mail"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="邮箱"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:padding="5dp"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+                <!-- 公司-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_store"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="公司"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:padding="5dp"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+                <!-- 职位-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_position"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="职位"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:padding="5dp"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+                <!-- 行业-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_vocation"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="手机号"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:padding="5dp"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+                <!-- 注册时间-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_date"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="注册时间"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:padding="5dp"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+                <!-- 二维码-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="18dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_date"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="二维码"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:padding="5dp"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+        <!-- 二维码布局-->
+        <RelativeLayout
+            android:id="@+id/layout_QRcode"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- 退出-->
+            <ImageView
+                android:id="@+id/close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:src="@mipmap/icon_close"/>
+            <!-- 头像-->
+            <ImageView
+                android:id="@+id/pic_photo"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="30dp"
+                android:src="@mipmap/default_photo"/>
+            <!-- 二维码-->
+            <RelativeLayout
+                android:id="@+id/layout_gray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="26dp"
+                android:layout_marginRight="26dp"
+                android:layout_marginTop="70dp"
+                android:background="@color/light_gray">
+
+                <FrameLayout
+                    android:id="@+id/qrcode_fragment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="87dp">
+                    <!-- 第一层图片 二维码框-->
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@mipmap/qrcode_bg"/>
+                    <!-- 第二层图片-->
+                    <ImageView
+                        android:id="@+id/img_qrcode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/qrcode"/>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/qrcode_fragment"
+                    android:layout_alignLeft="@+id/qrcode_fragment"
+                    android:layout_alignStart="@+id/qrcode_fragment"
+                    android:layout_below="@+id/qrcode_fragment"
+                    android:layout_marginBottom="63dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+                    <!--打印-->
+                    <Button
+                        android:id="@+id/btn_log"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="30dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_code_style"
+                        android:text="打印二维码"
+                        android:textColor="@color/colorTheme"
+                        />
+
+                    <!--手机-->
+                    <Button
+                        android:id="@+id/btn_tosend"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/btn_code_style"
+                        android:text="发送至手机"
+                        android:textColor="@color/colorTheme"
+                        />
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+    <!--</com.example.jingbin.cloudreader.view.sliding.SlidingLayout>-->
+</layout>
