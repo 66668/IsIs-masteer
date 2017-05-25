@@ -12,7 +12,9 @@ import com.linzhi.isis.R;
 import com.linzhi.isis.adapter.RegistAdapter;
 import com.linzhi.isis.app.Constants;
 import com.linzhi.isis.base.BaseFragment;
+import com.linzhi.isis.base.baseadapter.OnItemClickListener;
 import com.linzhi.isis.bean.regist.RegistBean;
+import com.linzhi.isis.bean.regist.RegistDetailBean;
 import com.linzhi.isis.databinding.FragmentRegistBinding;
 import com.linzhi.isis.http.MyHttpService;
 import com.linzhi.isis.http.cache.ACache;
@@ -31,7 +33,7 @@ import rx.schedulers.Schedulers;
  * Created by sjy on 2017/5/8.
  */
 
-public class RegistFragment extends BaseFragment<FragmentRegistBinding> implements View.OnClickListener{
+public class RegistFragment extends BaseFragment<FragmentRegistBinding> implements View.OnClickListener {
     private static final String TAG = "SJY";
 
     // 初始化完成后加载数据
@@ -49,7 +51,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
     private RegistAdapter registAdapter;
     private String conferenceID;
     private String companyid;
-
+    private RegistDetailBean bean;
     @Override
     public int setContent() {
         return R.layout.fragment_regist;
@@ -70,6 +72,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
         registAdapter = new RegistAdapter(activity);
         registBean = (RegistBean) aCache.getAsObject(Constants.REGIST_TAG);
         isPrepared = true;
+        //
         initListener();
     }
 
@@ -142,28 +145,6 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
         }
     }
 
-    private void setAdapter(RegistBean registBean) {
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        bindingView.listOne.setLayoutManager(mLayoutManager);
-
-        // 加上这两行代码，下拉出提示才不会产生出现刷新头的bug，不加拉不下来
-        bindingView.listOne.setPullRefreshEnabled(false);
-        bindingView.listOne.clearHeader();
-
-        bindingView.listOne.setLoadingMoreEnabled(false);
-        // 需加，不然滑动不流畅
-        bindingView.listOne.setNestedScrollingEnabled(false);
-        bindingView.listOne.setHasFixedSize(false);
-
-        registAdapter.clear();
-        registAdapter.addAll(registBean.getResult());
-        bindingView.listOne.setAdapter(registAdapter);
-        registAdapter.notifyDataSetChanged();
-
-        isFirst = false;
-    }
-
 
     //
     private void loadRegistData() {
@@ -227,6 +208,29 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
 
     }
 
+    private void setAdapter(RegistBean registBean) {
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        bindingView.listOne.setLayoutManager(mLayoutManager);
+
+        // 加上这两行代码，下拉出提示才不会产生出现刷新头的bug，不加拉不下来
+        bindingView.listOne.setPullRefreshEnabled(false);
+        bindingView.listOne.clearHeader();
+
+        bindingView.listOne.setLoadingMoreEnabled(false);
+        // 需加，不然滑动不流畅
+        bindingView.listOne.setNestedScrollingEnabled(false);
+        bindingView.listOne.setHasFixedSize(false);
+
+        registAdapter.clear();
+        registAdapter.addAll(registBean.getResult());
+        registAdapter.setOnItemClickListener(listener);//添加监听
+        bindingView.listOne.setAdapter(registAdapter);
+        registAdapter.notifyDataSetChanged();
+
+        isFirst = false;
+    }
+
     @Override
     protected void onRefresh() {
         loadRegistData();
@@ -246,6 +250,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
         super.onResume();
         DebugUtil.error("--RegistFragment   ----onResume");
     }
+
     private void initListener() {
         bindingView.closeQrcode.setOnClickListener(this);
         bindingView.btnLog.setOnClickListener(this);
@@ -274,6 +279,21 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
         }
 
     }
+
+    //自定义recyclerView的监听
+    OnItemClickListener<RegistDetailBean> listener = new OnItemClickListener<RegistDetailBean>() {
+        @Override
+        public void onClick(RegistDetailBean registDetailBean, int position) {
+
+            bindingView.layoutQRcode.setVisibility(View.GONE);//二维码布局消失
+            bindingView.scrollViewDetail.setVisibility(View.VISIBLE);//详细界面显示
+            bean = registDetailBean;
+            //数据绑定
+            bindingView.setDetailBean(bean);
+        }
+    };
+
+
 }
 
 

@@ -2,10 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
-        <!--调用静态方法-->
-        <import type="com.linzhi.isis.utils.StringFormatUtil"/>
-
         <variable
             name="registDetailBean"
             type="com.linzhi.isis.bean.regist.RegistDetailBean"/>

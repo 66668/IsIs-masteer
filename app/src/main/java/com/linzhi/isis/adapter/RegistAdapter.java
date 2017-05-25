@@ -10,7 +10,6 @@ import com.linzhi.isis.base.baseadapter.BaseRecyclerViewAdapter;
 import com.linzhi.isis.base.baseadapter.BaseRecyclerViewHolder;
 import com.linzhi.isis.bean.regist.RegistDetailBean;
 import com.linzhi.isis.databinding.ItemRegistBinding;
-import com.linzhi.isis.utils.DebugUtil;
 import com.linzhi.isis.utils.PerfectClickListener;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
@@ -28,6 +27,7 @@ public class RegistAdapter extends BaseRecyclerViewAdapter<RegistDetailBean> {
         this.activity = activity;
     }
 
+    //在这里把ViewHolder绑定Item的布局
     @Override
     public BaseRecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(parent, R.layout.item_regist);
@@ -39,6 +39,7 @@ public class RegistAdapter extends BaseRecyclerViewAdapter<RegistDetailBean> {
             super(context, layoutId);
         }
 
+        //在这里绑定数据到ViewHolder里面
         @Override
         public void onBindViewHolder(final RegistDetailBean positionData, final int position) {
             if (positionData != null) {
@@ -64,33 +65,9 @@ public class RegistAdapter extends BaseRecyclerViewAdapter<RegistDetailBean> {
                 binding.llOneItem.setOnClickListener(new PerfectClickListener() {
                     @Override
                     protected void onNoDoubleClick(View v) {
-
-                        DebugUtil.debug("点击电影看详情");
-
-                        //                        OneMovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
-
-
-                        //                        if (position % 2 == 0) {
-
-                        //                            SlideScrollViewActivity.start(activity, positionData, binding.ivOnePhoto);
-
-                        //                            MovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                            OneMovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
-
-                        //                            TestActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                            activity.overridePendingTransition(R.anim.push_fade_out, R.anim.push_fade_in);
-                        //                        } else {
-                        //                            SlideScrollViewActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                            SlideShadeViewActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                            OneMovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                        }
-
-                        // 这个可以
-                        //                        SlideScrollViewActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                        TestActivity.start(activity,positionData,binding.ivOnePhoto);
-                        //                        v.getContext().startActivity(new Intent(v.getContext(), SlideScrollViewActivity.class));
-
-                        //                        SlideShadeViewActivity.start(activity, positionData, binding.ivOnePhoto);
+                        if (listener != null) {
+                            listener.onClick(positionData, position);
+                        }
 
                     }
                 });

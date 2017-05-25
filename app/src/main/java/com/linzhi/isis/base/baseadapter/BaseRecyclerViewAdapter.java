@@ -34,6 +34,11 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
         return data.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
     public void addAll(List<T> data) {
         this.data.addAll(data);
     }
@@ -52,6 +57,7 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
     public void remove(int position) {
         data.remove(position);
     }
+
     public void removeAll(List<T> data) {
         this.data.retainAll(data);
     }
