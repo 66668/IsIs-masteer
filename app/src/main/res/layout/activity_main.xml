@@ -14,7 +14,7 @@
             android:id="@+id/topbar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/colorTheme"
+            android:background="@color/mycolorTheme"
             android:gravity="center_vertical">
 
             <ImageView

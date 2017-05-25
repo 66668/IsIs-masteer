@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import com.linzhi.isis.R;
 import com.linzhi.isis.app.rx.RxBus;
 import com.linzhi.isis.databinding.ActivityMainBinding;
-import com.linzhi.isis.ui.regist.RegistFragment;
+import com.linzhi.isis.ui.regist.SigninFragment;
 import com.linzhi.isis.view.MyFragmentPagerAdapter;
 
 import java.util.ArrayList;
@@ -73,10 +73,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //加载fragment模块
     private void initContentFragment() {
+
         mFragmentList = new ArrayList<>();
-        mFragmentList.add(new RegistFragment());
-        mFragmentList.add(new RegistFragment());
-        mFragmentList.add(new RegistFragment());
+        mFragmentList.add(new SigninFragment());
+        mFragmentList.add(new SigninFragment());
+        mFragmentList.add(new SigninFragment());
 
         // 注意使用的是：getSupportFragmentManager
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList);

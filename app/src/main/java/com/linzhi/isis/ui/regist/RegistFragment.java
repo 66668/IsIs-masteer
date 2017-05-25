@@ -48,6 +48,10 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> {
     private String conferenceID;
     private String companyid;
 
+    /**
+     * 设置布局
+     * @return
+     */
     @Override
     public int setContent() {
         return R.layout.fragment_regist;
@@ -66,7 +70,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> {
 
         aCache = ACache.get(getActivity());
         registAdapter = new RegistAdapter(activity);
-        registBean = (RegistBean) aCache.getAsObject(Constants.ONE_HOT_MOVIE);
+        registBean = (RegistBean) aCache.getAsObject(Constants.REGIST_FRAGMENT_TAG);
         isPrepared = true;
 
     }
@@ -205,9 +209,9 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> {
                     @Override
                     public void onNext(RegistBean registBean) {
                         if (registBean != null) {
-                            aCache.remove(Constants.ONE_HOT_MOVIE);
+                            aCache.remove(Constants.REGIST_FRAGMENT_TAG);
                             // 保存12个小时
-                            aCache.put(Constants.ONE_HOT_MOVIE, registBean, 43200);
+                            aCache.put(Constants.REGIST_FRAGMENT_TAG, registBean, 43200);
                             setAdapter(registBean);
                             // 保存请求的日期
                             SPUtils.putString("one_data", TimeUtil.getData());

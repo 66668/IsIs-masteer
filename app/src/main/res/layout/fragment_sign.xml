@@ -25,7 +25,7 @@
         app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
 
         <com.linzhi.isis.xrecyclerview.XRecyclerView
-            android:id="@+id/list_one"
+            android:id="@+id/list_sign"
             android:layout_width="475dp"
             android:layout_height="match_parent"
             android:orientation="vertical"/>
@@ -322,6 +322,8 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
+
+
         <!-- 二维码布局-->
         <RelativeLayout
             android:id="@+id/layout_QRcode"

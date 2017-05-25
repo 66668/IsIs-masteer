@@ -13,7 +13,7 @@ import java.util.List;
  * Created by sjy on 2017/5/9.
  */
 
-public class SigninBeans extends BaseObservable implements Serializable {
+public class SigninBean extends BaseObservable implements Serializable {
     @SerializedName("code")
     public String code;
 
