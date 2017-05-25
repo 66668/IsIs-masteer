@@ -39,7 +39,7 @@
             android:id="@+id/scrollView_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -291,6 +291,7 @@
                 </LinearLayout>
                 <!-- 二维码-->
                 <LinearLayout
+                    android:id="@+id/item_qrcode"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center_vertical"
@@ -324,12 +325,13 @@
         </ScrollView>
         <!-- 二维码布局-->
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/layout_QRcode"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <!-- 退出-->
             <ImageView
-                android:id="@+id/close"
+                android:id="@+id/close_qrcode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

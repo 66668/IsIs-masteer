@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
 import com.linzhi.isis.R;
 import com.linzhi.isis.adapter.RegistAdapter;
@@ -19,6 +20,7 @@ import com.linzhi.isis.ui.MainActivity;
 import com.linzhi.isis.utils.DebugUtil;
 import com.linzhi.isis.utils.SPUtils;
 import com.linzhi.isis.utils.TimeUtil;
+import com.linzhi.isis.utils.ToastUtils;
 
 import rx.Observer;
 import rx.Subscription;
@@ -29,7 +31,7 @@ import rx.schedulers.Schedulers;
  * Created by sjy on 2017/5/8.
  */
 
-public class RegistFragment extends BaseFragment<FragmentRegistBinding> {
+public class RegistFragment extends BaseFragment<FragmentRegistBinding> implements View.OnClickListener{
     private static final String TAG = "SJY";
 
     // 初始化完成后加载数据
@@ -66,7 +68,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> {
 
         aCache = ACache.get(getActivity());
         registAdapter = new RegistAdapter(activity);
-        registBean = (RegistBean) aCache.getAsObject(Constants.ONE_HOT_MOVIE);
+        registBean = (RegistBean) aCache.getAsObject(Constants.REGIST_TAG);
         isPrepared = true;
 
     }
@@ -205,9 +207,9 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> {
                     @Override
                     public void onNext(RegistBean registBean) {
                         if (registBean != null) {
-                            aCache.remove(Constants.ONE_HOT_MOVIE);
+                            aCache.remove(Constants.REGIST_TAG);
                             // 保存12个小时
-                            aCache.put(Constants.ONE_HOT_MOVIE, registBean, 43200);
+                            aCache.put(Constants.REGIST_TAG, registBean, 43200);
                             setAdapter(registBean);
                             // 保存请求的日期
                             SPUtils.putString("one_data", TimeUtil.getData());
@@ -243,6 +245,34 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> {
     public void onResume() {
         super.onResume();
         DebugUtil.error("--RegistFragment   ----onResume");
+    }
+    private void initListener() {
+        bindingView.closeQrcode.setOnClickListener(this);
+        bindingView.btnLog.setOnClickListener(this);
+        bindingView.btnTosend.setOnClickListener(this);
+        bindingView.itemQrcode.setOnClickListener(this);
+    }
+
+    //监听
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.close_qrcode://关闭二维码
+                bindingView.layoutQRcode.setVisibility(View.GONE);//二维码布局消失
+                bindingView.scrollViewDetail.setVisibility(View.VISIBLE);//详细界面显示
+                break;
+            case R.id.btn_log:
+                ToastUtils.ShortToast(activity, "打印");
+                break;
+            case R.id.btn_tosend:
+                ToastUtils.ShortToast(activity, "发短信");
+                break;
+            case R.id.item_qrcode:
+                bindingView.layoutQRcode.setVisibility(View.VISIBLE);//二维码布局显示
+                bindingView.scrollViewDetail.setVisibility(View.GONE);//详细界面消失
+                break;
+        }
+
     }
 }
 

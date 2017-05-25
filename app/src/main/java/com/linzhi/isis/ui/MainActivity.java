@@ -17,6 +17,7 @@ import com.linzhi.isis.R;
 import com.linzhi.isis.app.rx.RxBus;
 import com.linzhi.isis.databinding.ActivityMainBinding;
 import com.linzhi.isis.ui.regist.RegistFragment;
+import com.linzhi.isis.ui.regist.SigninFragment;
 import com.linzhi.isis.view.MyFragmentPagerAdapter;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-//        initStatusView();
+        //        initStatusView();
         initView();
 
         initContentFragment();
@@ -54,11 +55,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //设置状态栏
-//    private void initStatusView() {
-//        ViewGroup.LayoutParams layoutParams = mBinding.viewStatus.getLayoutParams();
-//        layoutParams.height = StatusBarUtil.getStatusBarHeight(this);
-//        mBinding.viewStatus.setLayoutParams(layoutParams);
-//    }
+    //    private void initStatusView() {
+    //        ViewGroup.LayoutParams layoutParams = mBinding.viewStatus.getLayoutParams();
+    //        layoutParams.height = StatusBarUtil.getStatusBarHeight(this);
+    //        mBinding.viewStatus.setLayoutParams(layoutParams);
+    //    }
 
     //初始化控件，获取跳转传值
     private void initView() {
@@ -74,9 +75,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //加载fragment模块
     private void initContentFragment() {
         mFragmentList = new ArrayList<>();
+        mFragmentList.add(new SigninFragment());
         mFragmentList.add(new RegistFragment());
-        mFragmentList.add(new RegistFragment());
-        mFragmentList.add(new RegistFragment());
+        mFragmentList.add(new SigninFragment());
 
         // 注意使用的是：getSupportFragmentManager
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList);
@@ -103,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBinding.ivTitleSign.setOnClickListener(this);
         mBinding.ivTitleThree.setOnClickListener(this);
 
+        mBinding.imgBack.setOnClickListener(this);
+        mBinding.tvQuit.setOnClickListener(this);
     }
 
     @Override
@@ -134,7 +137,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     vpContent.setCurrentItem(2);
                 }
                 break;
-            default:
+            case R.id.img_back:
+                this.finish();
+                break;
+            case R.id.tv_quit:
+                this.finish();
                 break;
         }
 
