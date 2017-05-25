@@ -16,8 +16,6 @@
 
     <!-- 主题颜色-->
     <color name="colorTheme">#027DE5</color>
-    <color name="mycolorTheme">#027DE5</color>
-
     <!--正文文字颜色-->
     <color name="colorContent">#ff333333</color>
 

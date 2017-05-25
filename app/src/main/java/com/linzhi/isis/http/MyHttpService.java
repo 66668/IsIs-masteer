@@ -5,7 +5,7 @@ import com.linzhi.isis.bean.conference.ConferenceBean;
 import com.linzhi.isis.bean.login.LoginBean;
 import com.linzhi.isis.bean.login.UserInfoBean;
 import com.linzhi.isis.bean.regist.RegistBean;
-import com.linzhi.isis.bean.signin.SigninBean;
+import com.linzhi.isis.bean.signin.SigninBeans;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -23,7 +23,7 @@ public interface MyHttpService {
      */
     @FormUrlEncoded
     @POST("EmployeeSearch/GetEmployeeSearch")
-    Observable<SigninBean> GetSearchSigninList(@Field("CompanyID") String CompanyID
+    Observable<SigninBeans> GetSearchSigninList(@Field("CompanyID") String CompanyID
             , @Field("ConferenceID") String ConferenceID
             , @Field("Telephone") String Telephone
             , @Field("EmpStore") String EmpStore

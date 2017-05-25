@@ -5,13 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.linzhi.isis.R;
 import com.linzhi.isis.adapter.SigninAdapter;
 import com.linzhi.isis.app.Constants;
 import com.linzhi.isis.base.BaseFragment;
-import com.linzhi.isis.bean.signin.SigninBean;
-import com.linzhi.isis.databinding.FragmentSignBinding;
+import com.linzhi.isis.bean.signin.SigninBeans;
+import com.linzhi.isis.databinding.FragmentSigninBinding;
 import com.linzhi.isis.http.MyHttpService;
 import com.linzhi.isis.http.cache.ACache;
 import com.linzhi.isis.ui.MainActivity;
@@ -28,7 +29,7 @@ import rx.schedulers.Schedulers;
  * Created by sjy on 2017/5/8.
  */
 
-public class SigninFragment extends BaseFragment<FragmentSignBinding> {
+public class SigninFragment extends BaseFragment<FragmentSigninBinding> {
     private static final String TAG = "SJY";
 
     // 初始化完成后加载数据
@@ -42,20 +43,14 @@ public class SigninFragment extends BaseFragment<FragmentSignBinding> {
 
     private ACache aCache;
     private MainActivity activity;
-    private SigninBean signinBean;
+    private SigninBeans registBean;
     private SigninAdapter signinAdapter;
     private String conferenceID;
     private String companyid;
 
-
-    /**
-     * 设置布局
-     *
-     * @return
-     */
     @Override
     public int setContent() {
-        return R.layout.fragment_sign;
+        return R.layout.fragment_regist;
     }
 
     @Override
@@ -71,11 +66,15 @@ public class SigninFragment extends BaseFragment<FragmentSignBinding> {
 
         aCache = ACache.get(getActivity());
         signinAdapter = new SigninAdapter(activity);
-        signinBean = (SigninBean) aCache.getAsObject(Constants.GIGNIN_FRAGMENT_TAG);
+        //        registBean = (SigninBeans) aCache.getAsObject(Constants.ONE_HOT_MOVIE);
         isPrepared = true;
 
     }
 
+    private void initRxBus() {
+        Log.d(TAG, "registfragment11: ");
+
+    }
 
     /**
      * 获取缓存数据，没有就加载
@@ -83,13 +82,14 @@ public class SigninFragment extends BaseFragment<FragmentSignBinding> {
 
     @Override
     protected void loadData() {
+        DebugUtil.error("------RegistFragment---loadData: ");
 
         if (!isPrepared || !mIsVisible) {
             return;
         }
 
         // 获取one_data对应的value，没有默认为2016-11-26，即不是当天，则请求数据（正在请求时避免再次请求）
-        String oneData = SPUtils.getString("one_data", "2016-11-25");
+        String oneData = SPUtils.getString("one_data", "2016-11-26");
 
         if (!oneData.equals(TimeUtil.getData()) && !mIsLoading) {
             showLoading();
@@ -106,14 +106,14 @@ public class SigninFragment extends BaseFragment<FragmentSignBinding> {
 
             showLoading();
 
-            if (signinBean == null && !mIsLoading) {
+            if (registBean == null && !mIsLoading) {
                 postDelayLoad();
             } else {
-                bindingView.listSign.postDelayed(new Runnable() {
+                bindingView.listOne.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         synchronized (this) {
-                            setAdapter(signinBean);
+                            setAdapter(registBean);
                             showContentView();
                         }
                     }
@@ -131,7 +131,7 @@ public class SigninFragment extends BaseFragment<FragmentSignBinding> {
         synchronized (this) {
             if (!mIsLoading) {
                 mIsLoading = true;
-                bindingView.listSign.postDelayed(new Runnable() {
+                bindingView.listOne.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         loadRegistData();
@@ -141,23 +141,23 @@ public class SigninFragment extends BaseFragment<FragmentSignBinding> {
         }
     }
 
-    private void setAdapter(SigninBean signinBean) {
+    private void setAdapter(SigninBeans signinBeans) {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        bindingView.listSign.setLayoutManager(mLayoutManager);
+        bindingView.listOne.setLayoutManager(mLayoutManager);
 
         // 加上这两行代码，下拉出提示才不会产生出现刷新头的bug，不加拉不下来
-        bindingView.listSign.setPullRefreshEnabled(false);
-        bindingView.listSign.clearHeader();
+        bindingView.listOne.setPullRefreshEnabled(false);
+        bindingView.listOne.clearHeader();
 
-        bindingView.listSign.setLoadingMoreEnabled(false);
+        bindingView.listOne.setLoadingMoreEnabled(false);
         // 需加，不然滑动不流畅
-        bindingView.listSign.setNestedScrollingEnabled(false);
-        bindingView.listSign.setHasFixedSize(false);
+        bindingView.listOne.setNestedScrollingEnabled(false);
+        bindingView.listOne.setHasFixedSize(false);
 
         signinAdapter.clear();
-        signinAdapter.addAll(signinBean.getResult());
-        bindingView.listSign.setAdapter(signinAdapter);
+        signinAdapter.addAll(signinBeans.getResult());
+        bindingView.listOne.setAdapter(signinAdapter);
         signinAdapter.notifyDataSetChanged();
 
         isFirst = false;
@@ -185,7 +185,7 @@ public class SigninFragment extends BaseFragment<FragmentSignBinding> {
                 .GetSearchSigninList(companyid, conferenceID, "", "", "")//创建了被观察者Observable<>
                 .subscribeOn(Schedulers.io())//事件产生的线程,无数量上限的线程池的调度器,比Schedulers.newThread()更效率
                 .observeOn(AndroidSchedulers.mainThread())//消费的线程,指定的操作将在 Android 主线程运行
-                .subscribe(new Observer<SigninBean>() {//订阅观察者
+                .subscribe(new Observer<SigninBeans>() {//订阅观察者
 
                     //不会再有新的 onNext() 发出时，需要触发
                     @Override
@@ -204,12 +204,12 @@ public class SigninFragment extends BaseFragment<FragmentSignBinding> {
 
                     //
                     @Override
-                    public void onNext(SigninBean signinBean) {
-                        if (signinBean != null) {
-                            aCache.remove(Constants.GIGNIN_FRAGMENT_TAG);
+                    public void onNext(SigninBeans registBean) {
+                        if (registBean != null) {
+                            aCache.remove(Constants.ONE_HOT_MOVIE);
                             // 保存12个小时
-                            aCache.put(Constants.GIGNIN_FRAGMENT_TAG, signinBean, 43200);
-                            setAdapter(signinBean);
+                            aCache.put(Constants.ONE_HOT_MOVIE, registBean, 43200);
+                            setAdapter(registBean);
                             // 保存请求的日期
                             SPUtils.putString("one_data", TimeUtil.getData());
                             // 刷新结束
