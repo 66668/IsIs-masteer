@@ -70,7 +70,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
         registAdapter = new RegistAdapter(activity);
         registBean = (RegistBean) aCache.getAsObject(Constants.REGIST_TAG);
         isPrepared = true;
-
+        initListener();
     }
 
     private void initRxBus() {
