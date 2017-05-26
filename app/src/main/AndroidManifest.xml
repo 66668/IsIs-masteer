@@ -62,7 +62,10 @@
             android:theme="@style/Anim_style">
 
         </activity>
-
+        <activity
+            android:screenOrientation="landscape"
+            android:theme="@style/Anim_style"
+            android:name=".ui.MipCaptureActivity"/>
     </application>
 
 </manifest>

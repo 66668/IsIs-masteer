@@ -1,5 +1,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+
+        <variable
+            name="detailBean"
+            type="com.linzhi.isis.bean.signin.SigninDetailBean"/>
+    </data>
     <!--<com.example.jingbin.cloudreader.view.sliding.SlidingLayout xmlns:app="http://schemas.android.com/apk/res-auto"-->
     <!--android:id="@+id/slidingLayout"-->
     <!--android:layout_width="match_parent"-->
@@ -68,7 +74,7 @@
                         android:layout_marginTop="10dp"
                         android:gravity="center"
                         android:padding="5dp"
-                        android:text="姓名"
+                        android:text="@{detailBean.employeeName}"
                         android:textColor="@color/colorWhite"
                         android:textSize="14dp"/>
                 </RelativeLayout>
@@ -101,6 +107,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:padding="5dp"
+                        android:text="@{detailBean.telephone}"
+                        android:textColor="@android:color/black"
                         android:textSize="14sp"/>
                 </LinearLayout>
                 <!-- 微信-->
@@ -132,6 +140,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:padding="5dp"
+                        android:text="@{detailBean.weChat}"
+                        android:textColor="@android:color/black"
                         android:textSize="14sp"/>
                 </LinearLayout>
                 <!-- 邮箱-->
@@ -163,6 +173,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:padding="5dp"
+                        android:text="@{detailBean.email}"
+                        android:textColor="@android:color/black"
                         android:textSize="14sp"/>
                 </LinearLayout>
                 <!-- 公司-->
@@ -194,6 +206,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:padding="5dp"
+                        android:text="@{detailBean.empStore}"
+                        android:textColor="@android:color/black"
                         android:textSize="14sp"/>
                 </LinearLayout>
                 <!-- 职位-->
@@ -225,6 +239,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:padding="5dp"
+                        android:text="@{detailBean.position}"
+                        android:textColor="@android:color/black"
                         android:textSize="14sp"/>
                 </LinearLayout>
                 <!-- 行业-->
@@ -247,7 +263,7 @@
                         android:layout_marginLeft="7dp"
                         android:gravity="left"
                         android:padding="5dp"
-                        android:text="手机号"
+                        android:text="行业"
                         android:textColor="@android:color/black"
                         android:textSize="14sp"/>
 
@@ -256,6 +272,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:padding="5dp"
+                        android:text="@{detailBean.employeeID}"
+                        android:textColor="@android:color/black"
                         android:textSize="14sp"/>
                 </LinearLayout>
                 <!-- 注册时间-->
@@ -287,6 +305,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:padding="5dp"
+                        android:text="@{detailBean.createTime}"
+                        android:textColor="@android:color/black"
                         android:textSize="14sp"/>
                 </LinearLayout>
                 <!-- 二维码-->
@@ -317,19 +337,20 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:drawableRight="@mipmap/forword"
                         android:gravity="right"
                         android:padding="5dp"
-                        android:drawableRight="@mipmap/forword"
+                        android:textColor="@android:color/black"
                         android:textSize="14sp"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
         <!-- 二维码布局-->
         <RelativeLayout
-            android:visibility="gone"
             android:id="@+id/layout_QRcode"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
             <!-- 退出-->
             <ImageView
                 android:id="@+id/close_qrcode"
@@ -337,8 +358,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="30dp"
                 android:src="@mipmap/icon_close"/>
             <!-- 头像-->
             <ImageView
@@ -368,14 +389,14 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:background="@mipmap/qrcode_bg"/>
                     <!-- 第二层图片-->
                     <ImageView
                         android:id="@+id/img_qrcode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@mipmap/qrcode"/>
+                        android:layout_gravity="center"/>
                 </FrameLayout>
 
                 <LinearLayout

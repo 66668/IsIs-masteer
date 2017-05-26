@@ -19,6 +19,7 @@ import com.nineoldandroids.view.ViewPropertyAnimator;
  * Created by jingbin on 2016/11/25.
  */
 
+
 public class RegistAdapter extends BaseRecyclerViewAdapter<RegistDetailBean> {
 
     private Activity activity;
@@ -63,6 +64,8 @@ public class RegistAdapter extends BaseRecyclerViewAdapter<RegistDetailBean> {
                 ViewPropertyAnimator.animate(itemView).scaleY(1).setDuration(350).setInterpolator(new OvershootInterpolator()).start();
 
                 binding.llOneItem.setOnClickListener(new PerfectClickListener() {
+
+                    //监听回调
                     @Override
                     protected void onNoDoubleClick(View v) {
                         if (listener != null) {

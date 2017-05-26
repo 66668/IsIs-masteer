@@ -1,11 +1,10 @@
 package com.linzhi.isis.ui;
 
-import android.databinding.DataBindingUtil;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,22 +14,24 @@ import android.widget.RelativeLayout;
 
 import com.linzhi.isis.R;
 import com.linzhi.isis.app.rx.RxBus;
+import com.linzhi.isis.base.BaseActivity2;
 import com.linzhi.isis.databinding.ActivityMainBinding;
 import com.linzhi.isis.ui.regist.RegistFragment;
+import com.linzhi.isis.ui.regist.SigninFragment;
 import com.linzhi.isis.view.MyFragmentPagerAdapter;
 
 import java.util.ArrayList;
 
 import rx.functions.Action1;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class MainActivity extends BaseActivity2<ActivityMainBinding> implements View.OnClickListener, ViewPager.OnPageChangeListener {
     private static final String TAG = "SJY";
     ArrayList<Fragment> mFragmentList;
     private ViewPager vpContent;
     private Toolbar toolbar;
-    private RelativeLayout linearLayout;
+    private RelativeLayout relativeLayout;
     // 一定需要对应的bean
-    private ActivityMainBinding mBinding;
+//    private ActivityMainBinding bindingView;
     private ImageView titlebarReg;
     private ImageView titlebarSign;
     private ImageView titlebarThree;
@@ -38,8 +39,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        //        initStatusView();
+        setContentView(R.layout.activity_main);
+        showContentView();
+//        bindingView = DataBindingUtil.setContentView(this, R.layout.activity_main);
         initView();
 
         initContentFragment();
@@ -55,28 +57,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //设置状态栏
     //    private void initStatusView() {
-    //        ViewGroup.LayoutParams layoutParams = mBinding.viewStatus.getLayoutParams();
+    //        ViewGroup.LayoutParams layoutParams = bindingView.viewStatus.getLayoutParams();
     //        layoutParams.height = StatusBarUtil.getStatusBarHeight(this);
-    //        mBinding.viewStatus.setLayoutParams(layoutParams);
+    //        bindingView.viewStatus.setLayoutParams(layoutParams);
     //    }
 
     //初始化控件，获取跳转传值
     private void initView() {
-        linearLayout = mBinding.linearlayout;
-        toolbar = mBinding.toolbar;
-        vpContent = mBinding.vpContent;
+        vpContent = bindingView.vpContent;
+        toolbar = bindingView.toolbar;
+        relativeLayout = bindingView.relativeLayout;
 
-        titlebarReg = mBinding.ivTitleRegist;
-        titlebarSign = mBinding.ivTitleSign;
-        titlebarThree = mBinding.ivTitleThree;
+        titlebarReg = bindingView.ivTitleRegist;
+        titlebarSign = bindingView.ivTitleSign;
+        titlebarThree = bindingView.ivTitleThree;
     }
 
-    //加载fragment模块
+    /**
+     *  加载fragment模块
+     *
+     */
+
     private void initContentFragment() {
         mFragmentList = new ArrayList<>();
         mFragmentList.add(new RegistFragment());
-        mFragmentList.add(new RegistFragment());
-        mFragmentList.add(new RegistFragment());
+        mFragmentList.add(new SigninFragment());
+        mFragmentList.add(new SigninFragment());
 
         // 注意使用的是：getSupportFragmentManager
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList);
@@ -86,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         vpContent.addOnPageChangeListener(this);
 
         //设置默认显示
-        mBinding.ivTitleRegist.setSelected(true);
+        bindingView.ivTitleRegist.setSelected(true);
         vpContent.setCurrentItem(0);
 
         setSupportActionBar(toolbar);
@@ -99,12 +105,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //监听
     private void initListener() {
-        mBinding.ivTitleRegist.setOnClickListener(this);
-        mBinding.ivTitleSign.setOnClickListener(this);
-        mBinding.ivTitleThree.setOnClickListener(this);
+        bindingView.ivTitleRegist.setOnClickListener(this);
+        bindingView.ivTitleSign.setOnClickListener(this);
+        bindingView.ivTitleThree.setOnClickListener(this);
 
-        mBinding.imgBack.setOnClickListener(this);
-        mBinding.tvQuit.setOnClickListener(this);
+        bindingView.imgBack.setOnClickListener(this);
+        bindingView.tvQuit.setOnClickListener(this);
     }
 
     @Override
@@ -139,7 +145,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.img_back:
                 this.finish();
                 break;
-            case R.id.tv_quit:
+            case R.id.tv_quit://退出
+                //清除 acache缓存
+
+                //调用基类退出广播
+                Intent intent = new Intent();
+                intent.setAction(EXIT_APP_ACTION);
+                sendBroadcast(intent);//发送退出的广播
                 this.finish();
                 break;
         }

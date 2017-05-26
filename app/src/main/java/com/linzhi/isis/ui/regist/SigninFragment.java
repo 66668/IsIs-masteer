@@ -1,22 +1,30 @@
 package com.linzhi.isis.ui.regist;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.google.zxing.WriterException;
 import com.linzhi.isis.R;
 import com.linzhi.isis.adapter.SigninAdapter;
 import com.linzhi.isis.app.Constants;
 import com.linzhi.isis.base.BaseFragment;
+import com.linzhi.isis.base.baseadapter.OnItemClickListener;
 import com.linzhi.isis.bean.signin.SigninBeans;
+import com.linzhi.isis.bean.signin.SigninDetailBean;
 import com.linzhi.isis.databinding.FragmentSigninBinding;
 import com.linzhi.isis.http.MyHttpService;
 import com.linzhi.isis.http.cache.ACache;
+import com.linzhi.isis.qrcode.encoding.EncodingHandler;
 import com.linzhi.isis.ui.MainActivity;
 import com.linzhi.isis.utils.DebugUtil;
+import com.linzhi.isis.utils.DpUtils;
 import com.linzhi.isis.utils.SPUtils;
 import com.linzhi.isis.utils.TimeUtil;
 import com.linzhi.isis.utils.ToastUtils;
@@ -31,7 +39,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class SigninFragment extends BaseFragment<FragmentSigninBinding> implements View.OnClickListener {
-    private static final String TAG = "SJY";
+    private static final String TAG = "SigninFragment";
 
     // 初始化完成后加载数据
     private boolean isPrepared = false;
@@ -48,6 +56,12 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
     private SigninAdapter signinAdapter;
     private String conferenceID;
     private String companyid;
+
+    //二维码 参数
+    private SigninDetailBean bean;
+    private ImageView qrcodeImg;
+    private Bitmap qrcodeBitmap;
+    private String employeeid;
 
     @Override
     public int setContent() {
@@ -154,6 +168,7 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
 
         signinAdapter.clear();
         signinAdapter.addAll(signinBeans.getResult());
+        signinAdapter.setOnItemClickListener(listener);//添加监听
         bindingView.listOne.setAdapter(signinAdapter);
         signinAdapter.notifyDataSetChanged();
 
@@ -265,11 +280,50 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
                 ToastUtils.ShortToast(activity, "发短信");
                 break;
             case R.id.item_qrcode:
-                bindingView.layoutQRcode.setVisibility(View.VISIBLE);//二维码布局显示
-                bindingView.scrollViewDetail.setVisibility(View.GONE);//详细界面消失
+                //用registDetailBean的companyid生成二维码
+                if (bean != null) {
+                    employeeid = bean.getEmployeeID();
+                } else {
+                    return;//防止误操作
+                }
+
+                if (!employeeid.equals("")) {
+                    qrcodeImg = bindingView.imgQrcode;
+                    //调用二维码代码
+                    try {
+                        qrcodeBitmap = EncodingHandler.createQRCode(employeeid, DpUtils.dp2px(activity, 300));//设置225dp
+
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "onClick: WriterException=" + e.getMessage());
+                    }
+                    //
+
+                    qrcodeImg.setImageBitmap(qrcodeBitmap);
+
+                    //切换布局
+                    bindingView.layoutQRcode.setVisibility(View.VISIBLE);//二维码布局显示
+                    bindingView.scrollViewDetail.setVisibility(View.GONE);//详细界面消失
+
+                } else {
+                    ToastUtils.ShortToast(activity, "没有获取字符串，请切换用户试一试");
+                }
                 break;
         }
 
     }
+
+    //自定义recyclerView的监听
+    OnItemClickListener<SigninDetailBean> listener = new OnItemClickListener<SigninDetailBean>() {
+        @Override
+        public void onClick(SigninDetailBean registDetailBean, int position) {
+
+            bindingView.layoutQRcode.setVisibility(View.GONE);//二维码布局消失
+            bindingView.scrollViewDetail.setVisibility(View.VISIBLE);//详细界面显示
+            bean = registDetailBean;
+            //数据绑定
+            bindingView.setDetailBean(bean);
+        }
+    };
 }
 

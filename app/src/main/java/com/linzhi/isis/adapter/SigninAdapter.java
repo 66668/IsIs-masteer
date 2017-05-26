@@ -10,7 +10,6 @@ import com.linzhi.isis.base.baseadapter.BaseRecyclerViewAdapter;
 import com.linzhi.isis.base.baseadapter.BaseRecyclerViewHolder;
 import com.linzhi.isis.bean.signin.SigninDetailBean;
 import com.linzhi.isis.databinding.ItemSigninBinding;
-import com.linzhi.isis.utils.DebugUtil;
 import com.linzhi.isis.utils.PerfectClickListener;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
@@ -65,33 +64,11 @@ public class SigninAdapter extends BaseRecyclerViewAdapter<SigninDetailBean> {
                     @Override
                     protected void onNoDoubleClick(View v) {
 
-                        DebugUtil.debug("点击电影看详情");
+                        //监听回调
+                        if (listener != null) {
+                            listener.onClick(positionData, position);
 
-                        //                        OneMovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
-
-
-                        //                        if (position % 2 == 0) {
-
-                        //                            SlideScrollViewActivity.start(activity, positionData, binding.ivOnePhoto);
-
-                        //                            MovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                            OneMovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
-
-                        //                            TestActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                            activity.overridePendingTransition(R.anim.push_fade_out, R.anim.push_fade_in);
-                        //                        } else {
-                        //                            SlideScrollViewActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                            SlideShadeViewActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                            OneMovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                        }
-
-                        // 这个可以
-                        //                        SlideScrollViewActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                        TestActivity.start(activity,positionData,binding.ivOnePhoto);
-                        //                        v.getContext().startActivity(new Intent(v.getContext(), SlideScrollViewActivity.class));
-
-                        //                        SlideShadeViewActivity.start(activity, positionData, binding.ivOnePhoto);
-
+                        }
                     }
                 });
             }

@@ -5,13 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.widget.LinearLayout;
 
 import com.linzhi.isis.R;
 import com.linzhi.isis.adapter.ConferencesAdapter;
 import com.linzhi.isis.app.Constants;
-import com.linzhi.isis.base.BaseActivity;
+import com.linzhi.isis.base.BaseActivity2;
 import com.linzhi.isis.bean.conference.ConferenceBean;
 import com.linzhi.isis.databinding.ActConferenceBinding;
 import com.linzhi.isis.http.MyHttpService;
@@ -26,7 +27,7 @@ import rx.schedulers.Schedulers;
  * 会议选择 选中一个会议，跳转主界面
  */
 
-public class ConferenceActivity extends BaseActivity<ActConferenceBinding> {
+public class ConferenceActivity extends BaseActivity2<ActConferenceBinding> {
     //
     private static final String TAG = "ConferenceActivity";
 
@@ -49,6 +50,7 @@ public class ConferenceActivity extends BaseActivity<ActConferenceBinding> {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//全屏
 
         setContentView(R.layout.act_conference);//由于继承的BaseActivity有xml绑定databinding的操作，就不用再多写绑定了
+        showContentView();
         initID();//初始化控件
         mLayoutManager = new GridLayoutManager(getApplicationContext(), 4);//设置四列
         xrv_conference.setLayoutManager(mLayoutManager);//GridLayoutManager关联recycleView
@@ -136,6 +138,16 @@ public class ConferenceActivity extends BaseActivity<ActConferenceBinding> {
         }
         //        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 4);
 
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            // 不退出程序，进入后台
+            moveTaskToBack(true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

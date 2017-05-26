@@ -1,13 +1,12 @@
 package com.linzhi.isis.ui;
 
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import com.linzhi.isis.R;
+import com.linzhi.isis.base.BaseActivity2;
 import com.linzhi.isis.databinding.ActWelcomeBinding;
 import com.linzhi.isis.utils.ResourceUtils;
 
@@ -16,23 +15,26 @@ import com.linzhi.isis.utils.ResourceUtils;
  * Created by sjy on 2017/4/18.
  */
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends BaseActivity2<ActWelcomeBinding> {
 
-    private ActWelcomeBinding mBinding;
+    //    private ActWelcomeBinding mBinding;
     private boolean isIn;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.act_welcome);
+        //        mBinding = DataBindingUtil.setContentView(this, R.layout.act_welcome);
+
         //显示默认图
-        mBinding.activityTransition.setBackground(ResourceUtils.getDrawable(R.mipmap.welcome_bg));
+        bindingView.activityTransition.setBackground(ResourceUtils.getDrawable(R.mipmap.welcome_bg));
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 toLoginAct();
             }
-        },800);
+        }, 800);
     }
+
     private void toLoginAct() {
         if (isIn) {
             return;

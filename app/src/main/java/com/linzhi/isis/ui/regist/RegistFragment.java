@@ -1,13 +1,16 @@
 package com.linzhi.isis.ui.regist;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.google.zxing.WriterException;
 import com.linzhi.isis.R;
 import com.linzhi.isis.adapter.RegistAdapter;
 import com.linzhi.isis.app.Constants;
@@ -18,8 +21,10 @@ import com.linzhi.isis.bean.regist.RegistDetailBean;
 import com.linzhi.isis.databinding.FragmentRegistBinding;
 import com.linzhi.isis.http.MyHttpService;
 import com.linzhi.isis.http.cache.ACache;
+import com.linzhi.isis.qrcode.encoding.EncodingHandler;
 import com.linzhi.isis.ui.MainActivity;
 import com.linzhi.isis.utils.DebugUtil;
+import com.linzhi.isis.utils.DpUtils;
 import com.linzhi.isis.utils.SPUtils;
 import com.linzhi.isis.utils.TimeUtil;
 import com.linzhi.isis.utils.ToastUtils;
@@ -34,7 +39,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class RegistFragment extends BaseFragment<FragmentRegistBinding> implements View.OnClickListener {
-    private static final String TAG = "SJY";
+    private static final String TAG = "RegistFragment";
 
     // 初始化完成后加载数据
     private boolean isPrepared = false;
@@ -51,7 +56,12 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
     private RegistAdapter registAdapter;
     private String conferenceID;
     private String companyid;
+
     private RegistDetailBean bean;
+    private ImageView qrcodeImg;
+    private Bitmap qrcodeBitmap;
+    private String employeeid;
+
     @Override
     public int setContent() {
         return R.layout.fragment_regist;
@@ -272,9 +282,39 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
             case R.id.btn_tosend:
                 ToastUtils.ShortToast(activity, "发短信");
                 break;
-            case R.id.item_qrcode:
-                bindingView.layoutQRcode.setVisibility(View.VISIBLE);//二维码布局显示
-                bindingView.scrollViewDetail.setVisibility(View.GONE);//详细界面消失
+            case R.id.item_qrcode:// item 二维码
+
+
+                //用registDetailBean的companyid生成二维码
+                if (bean != null) {
+                    employeeid = bean.getEmployeeID();
+                } else {
+                    return;//防止误操作
+                }
+
+                if (!employeeid.equals("")) {
+                    qrcodeImg = bindingView.imgQrcode;
+                    //调用二维码代码
+                    try {
+                        qrcodeBitmap = EncodingHandler.createQRCode(employeeid, DpUtils.dp2px(activity, 300));//设置225dp
+
+                    } catch (WriterException e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "onClick: WriterException=" + e.getMessage());
+                    }
+                    //
+
+                    qrcodeImg.setImageBitmap(qrcodeBitmap);
+
+                    //切换布局
+                    bindingView.layoutQRcode.setVisibility(View.VISIBLE);//二维码布局显示
+                    bindingView.scrollViewDetail.setVisibility(View.GONE);//详细界面消失
+
+                } else {
+                    ToastUtils.ShortToast(activity, "没有获取字符串，请切换用户试一试");
+                }
+
+
                 break;
         }
 
