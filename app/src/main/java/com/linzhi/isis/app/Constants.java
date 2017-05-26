@@ -6,10 +6,19 @@ package com.linzhi.isis.app;
 
 public class Constants {
 
-    public static final String NIGHT_SKIN = "night.skin";
+    //sp缓存
+    public static final String ACACHE_DATA_REGIST = "date_acache_regist";
+    public static final String ACACHE_DATA_SIGN = "date_acache_sign";
+
+
+    public static final String USRENAME = "username";
+    public static final String PASSWORD = "password";
+
+
+
     public static final String KEY_MODE_NIGHT = "mode-night";
 
-    // 缓存妹子
+    // Acache 缓存
     public static String SIGIN_TAG = "sign_tag";
     public static String REGIST_TAG = "regist_tag";
 

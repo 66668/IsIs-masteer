@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class SPUtils {
 
-    private static final String CONFIG = "config";
+    private static final String CONFIG = "isis";
 
     /**
      * 获取SharedPreferences实例对象
@@ -22,7 +22,34 @@ public class SPUtils {
      * @param fileName
      */
     private static SharedPreferences getSharedPreference(String fileName) {
-      return MyApplication.getInstance().getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        return MyApplication.getInstance().getSharedPreferences(fileName, Context.MODE_PRIVATE);
+    }
+
+
+    public String getUserName() {
+        SharedPreferences sharedPreference = getSharedPreference(CONFIG);
+        return sharedPreference.getString(Constants.USRENAME, "");
+    }
+
+    public void setUserName(String userName) {
+        SharedPreferences.Editor editor = getSharedPreference(CONFIG).edit();
+        editor.putString(Constants.USRENAME, userName).apply();
+    }
+
+    public String getPassword() {
+        SharedPreferences sharedPreference = getSharedPreference(CONFIG);
+        return sharedPreference.getString(Constants.PASSWORD, "");
+    }
+
+    public void setPassword(String password) {
+        SharedPreferences.Editor editor = getSharedPreference(CONFIG).edit();
+        editor.putString(Constants.PASSWORD, password).apply();
+    }
+
+    //登录缓存清除
+    public void clearLogin() {
+        setUserName("");
+        setPassword("");
     }
 
     /**
@@ -33,12 +60,18 @@ public class SPUtils {
         editor.putString(key, value).apply();
     }
 
+
     /**
      * 获取String的value
      */
     public static String getString(String key, String defValue) {
         SharedPreferences sharedPreference = getSharedPreference(CONFIG);
         return sharedPreference.getString(key, defValue);
+    }
+
+    public static String getString(String key) {
+        SharedPreferences sharedPreference = getSharedPreference(CONFIG);
+        return sharedPreference.getString(key, "");
     }
 
     /**
@@ -57,6 +90,11 @@ public class SPUtils {
         return sharedPreference.getBoolean(key, defValue);
     }
 
+    public static boolean getBoolean(String key) {
+        SharedPreferences sharedPreference = getSharedPreference(CONFIG);
+        return sharedPreference.getBoolean(key, false);
+    }
+
     /**
      * 保存一个int类型的值！
      */
@@ -71,6 +109,12 @@ public class SPUtils {
     public static int getInt(String key, int defValue) {
         SharedPreferences sharedPreference = getSharedPreference(CONFIG);
         return sharedPreference.getInt(key, defValue);
+    }
+
+
+    public static int getInt(String key) {
+        SharedPreferences sharedPreference = getSharedPreference(CONFIG);
+        return sharedPreference.getInt(key, -1);
     }
 
     /**
@@ -89,6 +133,11 @@ public class SPUtils {
         return sharedPreference.getFloat(key, defValue);
     }
 
+    public static float getFloat(String key) {
+        SharedPreferences sharedPreference = getSharedPreference(CONFIG);
+        return sharedPreference.getFloat(key, -1f);
+    }
+
     /**
      * 保存一个long类型的值！
      */
@@ -105,10 +154,15 @@ public class SPUtils {
         return sharedPreference.getLong(key, defValue);
     }
 
+    public static long getLong(String key) {
+        SharedPreferences sharedPreference = getSharedPreference(CONFIG);
+        return sharedPreference.getLong(key, -1L);
+    }
+
     /**
      * 取出List<String>
      *
-     * @param key     List<String> 对应的key
+     * @param key List<String> 对应的key
      * @return List<String>
      */
     public static List<String> getStrListValue(String key) {
@@ -143,7 +197,7 @@ public class SPUtils {
     /**
      * 清空List<String>所有数据
      *
-     * @param key     List<String>对应的key
+     * @param key List<String>对应的key
      */
     public static void removeStrList(String key) {
         int size = getInt(key + "size", 0);
@@ -164,12 +218,5 @@ public class SPUtils {
         editor.remove(key).apply();
     }
 
-    public static boolean getNightMode() {
-        return SPUtils.getBoolean(Constants.KEY_MODE_NIGHT, false);
-    }
-
-    public static void setNightMode(boolean nightMode) {
-        SPUtils.putBoolean(Constants.KEY_MODE_NIGHT, nightMode);
-    }
 
 }

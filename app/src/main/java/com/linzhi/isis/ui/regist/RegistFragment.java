@@ -103,7 +103,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
         }
 
         // 获取one_data对应的value，没有默认为2016-11-26，即不是当天，则请求数据（正在请求时避免再次请求）
-        String oneData = SPUtils.getString("one_data", "2016-11-26");
+        String oneData = SPUtils.getString(Constants.ACACHE_DATA_REGIST, "2016-11-26");
 
         if (!oneData.equals(TimeUtil.getData()) && !mIsLoading) {
             showLoading();
@@ -203,7 +203,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
                             aCache.put(Constants.REGIST_TAG, registBean, 43200);
                             setAdapter(registBean);
                             // 保存请求的日期
-                            SPUtils.putString("one_data", TimeUtil.getData());
+                            SPUtils.putString(Constants.ACACHE_DATA_REGIST, TimeUtil.getData());
                             // 刷新结束-
                             mIsLoading = false;
                         }

@@ -14,6 +14,7 @@ import com.linzhi.isis.app.Constants;
 import com.linzhi.isis.http.MyHttpService;
 import com.linzhi.isis.http.cache.ACache;
 import com.linzhi.isis.ui.ConferenceActivity;
+import com.linzhi.isis.utils.SPUtils;
 import com.linzhi.isis.utils.ToastUtils;
 
 import rx.Observer;
@@ -52,8 +53,6 @@ public class LoginBtnListener {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-
-
                     forLogin();
                 }
             }, 1000);
@@ -86,7 +85,11 @@ public class LoginBtnListener {
                         if (userInfoBeanLoginBean.getCode().equals("1")) {//code=1
 
 
-                            //缓存 保存登录信息
+                            //sp 缓存登录信息
+                            SPUtils.putString(Constants.USRENAME,user.userName);
+                            SPUtils.putString(Constants.PASSWORD,user.password);
+
+                            //缓存 保存返回信息
                             aCache = ACache.get(context);
                             aCache.put(Constants.STORE_USER_ID, userInfoBeanLoginBean.getResult().getStoreUserId());
                             aCache.put(Constants.STORE_ID, userInfoBeanLoginBean.getResult().getStoreID());
