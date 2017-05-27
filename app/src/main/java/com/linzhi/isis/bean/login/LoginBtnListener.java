@@ -62,7 +62,7 @@ public class LoginBtnListener {
     private void forLogin() {
 
         //        //源码方式
-        MyHttpService.Builder.loginService().login(user.userName, user.password)
+         MyHttpService.Builder.loginService().login(user.userName, user.password)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -111,6 +111,7 @@ public class LoginBtnListener {
                         }
                     }
                 });
+
     }
 
     private void showToast(final String content) {

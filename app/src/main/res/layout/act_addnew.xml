@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <!-- 参数输入监听-->
+        <variable
+            name="addEvent"
+            type="com.linzhi.isis.bean.regist.AddNewEvent"/>
+
+        <variable
+            name="addNewBean"
+            type="com.linzhi.isis.bean.regist.AddnewBean"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/layout"
+            layout="@layout/topbar_common_itt"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <!-- 图片-->
+                <!-- 图片-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:background="@mipmap/photo_bg">
+
+                    <ImageView
+                        android:id="@+id/photo_img"
+                        android:layout_width="170dp"
+                        android:layout_height="170dp"
+                        android:layout_centerInParent="true"
+                        android:background="@mipmap/icon_photo"/>
+                </RelativeLayout>
+                <!-- 姓名-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="35dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_name"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="姓名"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:addTextChangedListener="@{addEvent.nameWatcher}"
+                        android:background="@null"
+                        android:gravity="left"
+                        android:hint="@string/name_hint"
+                        android:padding="5dp"
+                        android:paddingLeft="20dp"
+                        android:text="@{addNewBean.employeeName}"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/gray_common"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@color/gray_common"/>
+                <!-- 手机号-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="35dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_phone"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="手机号"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:id="@+id/et_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="left"
+                        android:hint="@string/telephone_hint"
+                        android:addTextChangedListener="@{addEvent.telephoneWatcher}"
+                        android:padding="5dp"
+                        android:paddingLeft="20dp"
+                        android:text="@{addNewBean.telephone}"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/gray_common"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@color/gray_common"/>
+                <!-- 微信-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="35dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_weixin"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="微信"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:addTextChangedListener="@{addEvent.weChatWatcher}"
+                        android:id="@+id/et_weChat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="left"
+                        android:hint="@string/weChat_hint"
+                        android:padding="5dp"
+                        android:paddingLeft="20dp"
+                        android:text="@{addNewBean.weChat}"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/gray_common"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@color/gray_common"/>
+                <!-- 邮箱-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="35dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_mail"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="邮箱"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:addTextChangedListener="@{addEvent.emailWatcher}"
+                        android:id="@+id/et_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="left"
+                        android:hint="@string/email_hint"
+                        android:padding="5dp"
+                        android:paddingLeft="20dp"
+                        android:text="@{addNewBean.email}"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/gray_common"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@color/gray_common"/>
+                <!-- 公司-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="35dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_store"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="公司"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:addTextChangedListener="@{addEvent.storeWatcher}"
+                        android:id="@+id/et_store"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="left"
+                        android:hint="@string/store_hint"
+                        android:padding="5dp"
+                        android:paddingLeft="20dp"
+                        android:text="@{addNewBean.empStore}"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/gray_common"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@color/gray_common"/>
+                <!-- 职位-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="35dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_position"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="职位"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:addTextChangedListener="@{addEvent.positionWatcher}"
+                        android:id="@+id/et_position"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="left"
+                        android:hint="@string/position_hint"
+                        android:padding="5dp"
+                        android:paddingLeft="20dp"
+                        android:text="@{addNewBean.position}"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/gray_common"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@color/gray_common"/>
+                <!-- 行业-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="35dp"
+                    android:paddingRight="25dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@mipmap/icon_vocation"/>
+
+                    <TextView
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:text="行业"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:addTextChangedListener="@{addEvent.industryWatcher}"
+                        android:id="@+id/et_hangye"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="left"
+                        android:hint="@string/hangye_hint"
+                        android:padding="5dp"
+                        android:paddingLeft="20dp"
+                        android:text="@{addNewBean.position}"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/gray_common"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp"
+                    android:background="@color/gray_common"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+
+</layout>

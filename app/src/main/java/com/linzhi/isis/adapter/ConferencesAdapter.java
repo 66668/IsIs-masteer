@@ -2,6 +2,7 @@ package com.linzhi.isis.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
@@ -74,35 +75,13 @@ public class ConferencesAdapter extends BaseRecyclerViewAdapter<ConferenceDetail
                         if (acache == null) {
                             acache = ACache.get(activity);
                         }
+                        Log.d(TAG, "onNoDoubleClick: 选中会议跳转 =" + positionData.getConferenceID());
                         acache.put(Constants.CONFERENCE_ID, positionData.getConferenceID());
 
                         // 页面跳转
                         Intent intent = new Intent(activity, MainActivity.class);
                         activity.startActivity(intent);
 
-                        //                        OneMovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
-
-                        //                        if (position % 2 == 0) {
-
-                        //                            SlideScrollViewActivity.start(activity, positionData, binding.ivOnePhoto);
-
-                        //                            MovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                            OneMovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
-
-                        //                            TestActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                            activity.overridePendingTransition(R.anim.push_fade_out, R.anim.push_fade_in);
-                        //                        } else {
-                        //                            SlideScrollViewActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                            SlideShadeViewActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                            OneMovieDetailActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                        }
-
-                        // 这个可以
-                        //                        SlideScrollViewActivity.start(activity, positionData, binding.ivOnePhoto);
-                        //                        TestActivity.start(activity,positionData,binding.ivOnePhoto);
-                        //                        v.getContext().startActivity(new Intent(v.getContext(), SlideScrollViewActivity.class));
-
-                        //                        SlideShadeViewActivity.start(activity, positionData, binding.ivOnePhoto);
 
                     }
                 });

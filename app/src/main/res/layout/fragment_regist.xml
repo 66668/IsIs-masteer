@@ -17,9 +17,9 @@
     <!--app:sliding_pointer_mode="more"-->
 
     <!--为了出现下拉阴影效果（加了上面的控件后就没有了）-->
-    <LinearLayout
-
+    <RelativeLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,17 +34,34 @@
             android:id="@+id/list_one"
             android:layout_width="475dp"
             android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:orientation="vertical"/>
 
+        <com.linzhi.isis.view.FloatActionButton
+            android:id="@+id/floatActionButton"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/lineView"
+            android:src="@android:drawable/ic_input_add"
+            android:tint="@android:color/white"
+            custom:bg_color="@color/colorTheme"/>
+
         <View
+            android:id="@+id/lineView"
             android:layout_width="1dp"
             android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/list_one"
             android:background="@color/gray_common"/>
         <!-- item详情布局-->
         <ScrollView
             android:id="@+id/scrollView_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/lineView"
             android:visibility="visible">
 
             <LinearLayout
@@ -55,14 +72,14 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:background="@color/gray_common">
+                    android:background="@mipmap/photo_bg">
 
                     <ImageView
                         android:id="@+id/photo_img"
                         android:layout_width="170dp"
                         android:layout_height="170dp"
                         android:layout_centerInParent="true"
-                        android:src="@mipmap/default_photo"/>
+                        android:background="@mipmap/icon_photo"/>
 
                     <TextView
                         android:id="@+id/tv_detail_name"
@@ -350,6 +367,7 @@
             android:id="@+id/layout_QRcode"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/lineView"
             android:visibility="gone">
             <!-- 退出-->
             <ImageView
@@ -368,7 +386,7 @@
                 android:layout_height="70dp"
                 android:layout_marginLeft="35dp"
                 android:layout_marginTop="30dp"
-                android:src="@mipmap/default_photo"/>
+                android:background="@mipmap/icon_photo"/>
             <!-- 二维码-->
             <RelativeLayout
                 android:id="@+id/layout_gray"
@@ -434,6 +452,6 @@
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
     <!--</com.example.jingbin.cloudreader.view.sliding.SlidingLayout>-->
 </layout>

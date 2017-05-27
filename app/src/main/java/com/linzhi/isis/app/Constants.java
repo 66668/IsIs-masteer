@@ -35,6 +35,7 @@ public class Constants {
 
     //缓存 存储一个会议的id
     public static String CONFERENCE_ID = "conferencelist";
+    public static String COMP = "conferencelist";
 
 
 }

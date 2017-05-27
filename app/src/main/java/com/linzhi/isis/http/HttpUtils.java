@@ -43,14 +43,14 @@ public class HttpUtils {
     private Gson gson;
     private Context context;
     private Object registHttps;
+    private Object addNewHttps;
     private Object loginHttps;
     private Object ConferenceHttps;
-    private IpmlTokenGetListener listener;
+
     private boolean debug;//判断 app版本，由application设置
 
-    // gankio、豆瓣、（轮播图）
+    private final static String TAG = "HttpUtils";
     private final static String API_BASE_URL = "http://59.110.26.83:8096/openapi/";
-    private final static String TAG = "HttpUtils";//Https://api.douban.com/v2/movie/in_theaters
 
     /**
      * 分页数据，每页的数量
@@ -112,7 +112,7 @@ public class HttpUtils {
     }
 
     /**
-     *  03-01 注册
+     * 03-01 注册
      *
      * @param clz
      * @param <T>
@@ -129,10 +129,28 @@ public class HttpUtils {
         return (T) registHttps;
     }
 
+    /**
+     * 03-02 添加新人员
+     *
+     * @param clz
+     * @param <T>
+     * @return
+     */
+    public <T> T addNewSerVer(Class<T> clz) {
+        if (addNewHttps == null) {
+            synchronized (HttpUtils.class) {
+                if (addNewHttps == null) {
+                    addNewHttps = getRetrofitBuilder(API_BASE_URL).build().create(clz);
+                }
+            }
+        }
+        return (T) addNewHttps;
+    }
+
 
     /**
      * retrofit配置 方式1
-     *  源码方式，gson解析自定义，和该app的解析方式不同，不使用该方法
+     * 源码方式，gson解析自定义，和该app的解析方式不同，不使用该方法
      *
      * @param apiUrl
      * @return
@@ -269,11 +287,6 @@ public class HttpUtils {
             throw new RuntimeException(e);
         }
 
-    }
-
-
-    public void setTokenListener(IpmlTokenGetListener listener) {
-        this.listener = listener;
     }
 
     /**

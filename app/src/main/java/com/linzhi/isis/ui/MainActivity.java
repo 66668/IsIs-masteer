@@ -11,13 +11,17 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.linzhi.isis.R;
+import com.linzhi.isis.app.Constants;
 import com.linzhi.isis.app.rx.RxBus;
 import com.linzhi.isis.base.BaseActivity2;
 import com.linzhi.isis.databinding.ActivityMainBinding;
+import com.linzhi.isis.http.cache.ACache;
 import com.linzhi.isis.ui.regist.RegistFragment;
 import com.linzhi.isis.ui.regist.SigninFragment;
+import com.linzhi.isis.utils.ToastUtils;
 import com.linzhi.isis.view.MyFragmentPagerAdapter;
 
 import java.util.ArrayList;
@@ -30,18 +34,19 @@ public class MainActivity extends BaseActivity2<ActivityMainBinding> implements 
     private ViewPager vpContent;
     private Toolbar toolbar;
     private RelativeLayout relativeLayout;
+    ACache aCache;
     // 一定需要对应的bean
-//    private ActivityMainBinding bindingView;
-    private ImageView titlebarReg;
-    private ImageView titlebarSign;
-    private ImageView titlebarThree;
+    //    private ActivityMainBinding bindingView;
+    private TextView titlebarReg;
+    private TextView titlebarSign;
+    private ImageView main_logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         showContentView();
-//        bindingView = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        //        bindingView = DataBindingUtil.setContentView(this, R.layout.activity_main);
         initView();
 
         initContentFragment();
@@ -70,19 +75,17 @@ public class MainActivity extends BaseActivity2<ActivityMainBinding> implements 
 
         titlebarReg = bindingView.ivTitleRegist;
         titlebarSign = bindingView.ivTitleSign;
-        titlebarThree = bindingView.ivTitleThree;
+        main_logo = bindingView.mainLogo;
     }
 
     /**
-     *  加载fragment模块
-     *
+     * 加载fragment模块
      */
 
     private void initContentFragment() {
         mFragmentList = new ArrayList<>();
+        mFragmentList.add(new SigninFragment());
         mFragmentList.add(new RegistFragment());
-        mFragmentList.add(new SigninFragment());
-        mFragmentList.add(new SigninFragment());
 
         // 注意使用的是：getSupportFragmentManager
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList);
@@ -92,7 +95,7 @@ public class MainActivity extends BaseActivity2<ActivityMainBinding> implements 
         vpContent.addOnPageChangeListener(this);
 
         //设置默认显示
-        bindingView.ivTitleRegist.setSelected(true);
+        bindingView.ivTitleSign.setSelected(true);
         vpContent.setCurrentItem(0);
 
         setSupportActionBar(toolbar);
@@ -107,43 +110,41 @@ public class MainActivity extends BaseActivity2<ActivityMainBinding> implements 
     private void initListener() {
         bindingView.ivTitleRegist.setOnClickListener(this);
         bindingView.ivTitleSign.setOnClickListener(this);
-        bindingView.ivTitleThree.setOnClickListener(this);
 
         bindingView.imgBack.setOnClickListener(this);
         bindingView.tvQuit.setOnClickListener(this);
+        main_logo.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_title_regist:
+            case R.id.iv_title_sign:
                 if (vpContent.getCurrentItem() != 0) {//不然cpu会有损耗
-                    titlebarReg.setSelected(true);
-                    titlebarSign.setSelected(false);
-                    titlebarThree.setSelected(false);
+                    titlebarReg.setSelected(false);
+                    titlebarSign.setSelected(true);
                     vpContent.setCurrentItem(0);
                 }
                 break;
-
-            case R.id.iv_title_sign:
+            case R.id.iv_title_regist:
                 if (vpContent.getCurrentItem() != 1) {//不然cpu会有损耗
-                    titlebarReg.setSelected(false);
-                    titlebarSign.setSelected(true);
-                    titlebarThree.setSelected(false);
+                    titlebarReg.setSelected(true);
+                    titlebarSign.setSelected(false);
                     vpContent.setCurrentItem(1);
                 }
                 break;
 
-            case R.id.iv_title_three:
-                if (vpContent.getCurrentItem() != 2) {//不然cpu会有损耗
-                    titlebarReg.setSelected(false);
-                    titlebarSign.setSelected(false);
-                    titlebarThree.setSelected(true);
-                    vpContent.setCurrentItem(2);
-                }
-                break;
+
             case R.id.img_back:
+                //清空缓存中保存的会议id
+                aCache = ACache.get(this);
+                aCache.remove(Constants.CONFERENCE_ID);
+
                 this.finish();
+                break;
+
+            case R.id.main_logo:
+                ToastUtils.ShortToast(this, "点我干嘛，我是logo");
                 break;
             case R.id.tv_quit://退出
                 //清除 acache缓存
@@ -170,18 +171,15 @@ public class MainActivity extends BaseActivity2<ActivityMainBinding> implements 
             case 0:
                 titlebarReg.setSelected(true);
                 titlebarSign.setSelected(false);
-                titlebarThree.setSelected(false);
                 break;
             case 1:
                 titlebarReg.setSelected(false);
                 titlebarSign.setSelected(true);
-                titlebarThree.setSelected(false);
                 vpContent.setCurrentItem(1);
                 break;
             case 2:
                 titlebarReg.setSelected(false);
                 titlebarSign.setSelected(false);
-                titlebarThree.setSelected(true);
                 break;
         }
     }

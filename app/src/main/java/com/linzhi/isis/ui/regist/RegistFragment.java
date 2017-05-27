@@ -1,6 +1,7 @@
 package com.linzhi.isis.ui.regist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,12 +23,14 @@ import com.linzhi.isis.databinding.FragmentRegistBinding;
 import com.linzhi.isis.http.MyHttpService;
 import com.linzhi.isis.http.cache.ACache;
 import com.linzhi.isis.qrcode.encoding.EncodingHandler;
+import com.linzhi.isis.ui.AddNewActivity;
 import com.linzhi.isis.ui.MainActivity;
 import com.linzhi.isis.utils.DebugUtil;
 import com.linzhi.isis.utils.DpUtils;
 import com.linzhi.isis.utils.SPUtils;
 import com.linzhi.isis.utils.TimeUtil;
 import com.linzhi.isis.utils.ToastUtils;
+import com.linzhi.isis.view.FloatActionButton;
 
 import rx.Observer;
 import rx.Subscription;
@@ -35,6 +38,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
+ * 注册
  * Created by sjy on 2017/5/8.
  */
 
@@ -60,6 +64,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
     private RegistDetailBean bean;
     private ImageView qrcodeImg;
     private Bitmap qrcodeBitmap;
+    private FloatActionButton floatActionButton;//+号控件
     private String employeeid;
 
     @Override
@@ -84,6 +89,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
         isPrepared = true;
         //
         initListener();
+        loadRegistData();
     }
 
     private void initRxBus() {
@@ -96,45 +102,47 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
      */
     @Override
     protected void loadData() {
-        DebugUtil.error("------RegistFragment---loadData: ");
+        //        DebugUtil.error("------RegistFragment---loadData: ");
+        //
+        //        if (!isPrepared || !mIsVisible) {
+        //            return;
+        //        }
+        //
+        //        // 获取one_data对应的value，没有默认为2016-11-26，即不是当天，则请求数据（正在请求时避免再次请求）
+        //        String oneData = SPUtils.getString(Constants.ACACHE_DATA_REGIST, "2016-11-26");
+        //
+        //        if (!oneData.equals(TimeUtil.getData()) && !mIsLoading) {
+        //            showLoading();
+        //            /**延迟执行防止卡顿*/
+        //            postDelayLoad();
+        //        } else {
+        //            // 为了正在刷新时不执行这部分
+        //            if (mIsLoading) {
+        //                return;
+        //            }
+        //            if (!isFirst) {
+        //                return;
+        //            }
+        //
+        //            showLoading();
+        //
+        //            if (registBean == null && !mIsLoading) {
+        //                postDelayLoad();
+        //            } else {
+        //                bindingView.listOne.postDelayed(new Runnable() {
+        //                    @Override
+        //                    public void run() {
+        //                        synchronized (this) {
+        //                            setAdapter(registBean);
+        //                            showContentView();
+        //                        }
+        //                    }
+        //                }, 150);
+        //                DebugUtil.error("----缓存: " + oneData);
+        //            }
+        //        }
+//        postDelayLoad();//
 
-        if (!isPrepared || !mIsVisible) {
-            return;
-        }
-
-        // 获取one_data对应的value，没有默认为2016-11-26，即不是当天，则请求数据（正在请求时避免再次请求）
-        String oneData = SPUtils.getString(Constants.ACACHE_DATA_REGIST, "2016-11-26");
-
-        if (!oneData.equals(TimeUtil.getData()) && !mIsLoading) {
-            showLoading();
-            /**延迟执行防止卡顿*/
-            postDelayLoad();
-        } else {
-            // 为了正在刷新时不执行这部分
-            if (mIsLoading) {
-                return;
-            }
-            if (!isFirst) {
-                return;
-            }
-
-            showLoading();
-
-            if (registBean == null && !mIsLoading) {
-                postDelayLoad();
-            } else {
-                bindingView.listOne.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        synchronized (this) {
-                            setAdapter(registBean);
-                            showContentView();
-                        }
-                    }
-                }, 150);
-                DebugUtil.error("----缓存: " + oneData);
-            }
-        }
     }
 
     /**
@@ -159,7 +167,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
     //
     private void loadRegistData() {
         if (aCache == null) {
-            aCache = ACache.get(getActivity());
+            aCache = ACache.get(activity);
         }
         if (TextUtils.isEmpty(companyid)) {
             companyid = aCache.getAsString(Constants.STORE_ID);
@@ -168,13 +176,14 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
         if (TextUtils.isEmpty(conferenceID)) {
             conferenceID = aCache.getAsString(Constants.CONFERENCE_ID);
         }
+        Log.d(TAG, "loadRegistData: 会议id=" + conferenceID);
 
         /**
          * 后台线程取数据，主线程显示』的程序策略
          */
 
         Subscription subscription = MyHttpService.Builder.getRegistService()
-                .GetSearchRegistList(companyid, conferenceID, "", "", "")//创建了被观察者Observable<>
+                .GetSearchRegistList(companyid, conferenceID, "")//创建了被观察者Observable<>
                 .subscribeOn(Schedulers.io())//事件产生的线程,无数量上限的线程池的调度器,比Schedulers.newThread()更效率
                 .observeOn(AndroidSchedulers.mainThread())//消费的线程,指定的操作将在 Android 主线程运行
                 .subscribe(new Observer<RegistBean>() {//订阅观察者
@@ -266,6 +275,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
         bindingView.btnLog.setOnClickListener(this);
         bindingView.btnTosend.setOnClickListener(this);
         bindingView.itemQrcode.setOnClickListener(this);
+        bindingView.floatActionButton.setOnClickListener(this);
     }
 
     //监听
@@ -281,6 +291,12 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
                 break;
             case R.id.btn_tosend:
                 ToastUtils.ShortToast(activity, "发短信");
+                break;
+            case R.id.floatActionButton://添加新员工
+
+                Intent intent = new Intent(activity, AddNewActivity.class);
+                startActivity(intent);
+
                 break;
             case R.id.item_qrcode:// item 二维码
 

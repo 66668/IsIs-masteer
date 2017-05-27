@@ -55,14 +55,14 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:background="@color/gray_common">
+                    android:background="@mipmap/photo_bg">
 
                     <ImageView
                         android:id="@+id/photo_img"
                         android:layout_width="170dp"
                         android:layout_height="170dp"
                         android:layout_centerInParent="true"
-                        android:src="@mipmap/default_photo"/>
+                        android:background="@mipmap/icon_photo"/>
 
                     <TextView
                         android:id="@+id/tv_detail_name"
@@ -368,7 +368,7 @@
                 android:layout_height="70dp"
                 android:layout_marginLeft="35dp"
                 android:layout_marginTop="30dp"
-                android:src="@mipmap/default_photo"/>
+                android:background="@mipmap/icon_photo"/>
             <!-- 二维码-->
             <RelativeLayout
                 android:id="@+id/layout_gray"

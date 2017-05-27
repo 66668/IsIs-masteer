@@ -9,6 +9,8 @@ import com.linzhi.isis.http.ParamNames;
 import java.io.Serializable;
 
 /**
+ * 返回登录接口信息
+ *
  * databinding数据源更新，界面自动更新操作
  * <p>
  * （1）@Bindable

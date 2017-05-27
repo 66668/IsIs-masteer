@@ -74,7 +74,7 @@ public class ImgLoadUtil {
         Glide.with(imageView.getContext())
                 .load(imageUrl)
                 .crossFade(500)
-                .error(R.mipmap.default_photo)
+                .error(R.mipmap.icon_photo)
                 .transform(new GlideCircleTransform(imageView.getContext()))
                 .into(imageView);
     }
@@ -137,6 +137,7 @@ public class ImgLoadUtil {
     public static void showImgBg(ImageView imageView, String url) {
         displayGaussian(imageView.getContext(), url, imageView);
     }
+
 
     /**
      * 会议列表图片

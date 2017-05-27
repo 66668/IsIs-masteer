@@ -62,10 +62,18 @@
             android:theme="@style/Anim_style">
 
         </activity>
+
+        <!-- 二维码摄像头-->
         <activity
+            android:name=".ui.MipCaptureActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/Anim_style"
-            android:name=".ui.MipCaptureActivity"/>
+            android:theme="@style/Anim_style"/>
+
+        <!-- 添加新员工-->
+        <activity
+            android:name=".ui.AddNewActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Anim_style"/>
     </application>
 
 </manifest>

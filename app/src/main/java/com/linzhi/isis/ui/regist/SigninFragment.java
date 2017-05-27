@@ -85,6 +85,7 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
         isPrepared = true;
 
         initListener();
+        loadSignData();
     }
 
 
@@ -95,43 +96,45 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
     @Override
     protected void loadData() {
 
-        if (!isPrepared || !mIsVisible) {
-            return;
-        }
+        //        if (!isPrepared || !mIsVisible) {
+        //            return;
+        //        }
+        //
+        //        // 获取one_data对应的value，没有默认为2016-11-26，即不是当天，则请求数据（正在请求时避免再次请求）
+        //        String oneData = SPUtils.getString(Constants.ACACHE_DATA_SIGN, "2016-11-26");
+        //
+        //        if (!oneData.equals(TimeUtil.getData()) && !mIsLoading) {
+        //            showLoading();
+        //            /**延迟执行防止卡顿*/
+        //            postDelayLoad();
+        //        } else {
+        //            // 为了正在刷新时不执行这部分
+        //            if (mIsLoading) {
+        //                return;
+        //            }
+        //            if (!isFirst) {
+        //                return;
+        //            }
+        //
+        //            showLoading();
+        //
+        //            if (registBean == null && !mIsLoading) {
+        //                postDelayLoad();
+        //            } else {
+        //                bindingView.listOne.postDelayed(new Runnable() {
+        //                    @Override
+        //                    public void run() {
+        //                        synchronized (this) {
+        //                            setAdapter(registBean);
+        //                            showContentView();
+        //                        }
+        //                    }
+        //                }, 150);
+        //                DebugUtil.error("----缓存: " + oneData);
+        //            }
+        //        }
+//        postDelayLoad();//databinding.FragmentSigninBinding.listOne' on a null object reference
 
-        // 获取one_data对应的value，没有默认为2016-11-26，即不是当天，则请求数据（正在请求时避免再次请求）
-        String oneData = SPUtils.getString(Constants.ACACHE_DATA_SIGN, "2016-11-26");
-
-        if (!oneData.equals(TimeUtil.getData()) && !mIsLoading) {
-            showLoading();
-            /**延迟执行防止卡顿*/
-            postDelayLoad();
-        } else {
-            // 为了正在刷新时不执行这部分
-            if (mIsLoading) {
-                return;
-            }
-            if (!isFirst) {
-                return;
-            }
-
-            showLoading();
-
-            if (registBean == null && !mIsLoading) {
-                postDelayLoad();
-            } else {
-                bindingView.listOne.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        synchronized (this) {
-                            setAdapter(registBean);
-                            showContentView();
-                        }
-                    }
-                }, 150);
-                DebugUtil.error("----缓存: " + oneData);
-            }
-        }
     }
 
     /**
@@ -145,7 +148,7 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
                 bindingView.listOne.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        loadRegistData();
+                        loadSignData();
                     }
                 }, 150);
             }
@@ -177,9 +180,9 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
 
 
     //
-    private void loadRegistData() {
+    private void loadSignData() {
         if (aCache == null) {
-            aCache = ACache.get(getActivity());
+            aCache = ACache.get(activity);
         }
         if (TextUtils.isEmpty(companyid)) {
             companyid = aCache.getAsString(Constants.STORE_ID);
@@ -194,7 +197,7 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
          */
 
         Subscription subscription = MyHttpService.Builder.getRegistService()
-                .GetSearchSigninList(companyid, conferenceID, "", "", "")//创建了被观察者Observable<>
+                .GetSearchSigninList(companyid, conferenceID, "")//创建了被观察者Observable<>
                 .subscribeOn(Schedulers.io())//事件产生的线程,无数量上限的线程池的调度器,比Schedulers.newThread()更效率
                 .observeOn(AndroidSchedulers.mainThread())//消费的线程,指定的操作将在 Android 主线程运行
                 .subscribe(new Observer<SigninBeans>() {//订阅观察者
@@ -240,7 +243,7 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
 
     @Override
     protected void onRefresh() {
-        loadRegistData();
+        loadSignData();
     }
 
     @Override

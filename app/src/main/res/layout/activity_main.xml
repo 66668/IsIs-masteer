@@ -57,51 +57,66 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:theme="@style/ToolbarStyle">
 
-                <ScrollView
+                <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center">
+                    android:layout_height="match_parent">
 
-                    <LinearLayout
+                    <ScrollView
+                        android:id="@+id/scrl_toolbar"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:orientation="vertical"
-                        android:theme="@style/AppTheme">
+                        android:layout_alignParentTop="true"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="200dp">
 
-                        <ImageView
-                            android:id="@+id/iv_title_regist"
-                            android:layout_width="55dp"
-                            android:layout_height="75dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginTop="10dp"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
                             android:background="?attr/selectableItemBackgroundBorderless"
-                            android:drawablePadding="5dp"
-                            android:src="@mipmap/toolbar_regist"
-                            />
+                            android:orientation="vertical"
+                            android:theme="@style/AppTheme">
 
-                        <ImageView
-                            android:id="@+id/iv_title_sign"
-                            android:layout_width="55dp"
-                            android:layout_height="75dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginTop="10dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:src="@mipmap/toolbar_signin"/>
+                            <TextView
+                                android:id="@+id/iv_title_sign"
+                                android:layout_width="55dp"
+                                android:layout_height="75dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="10dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:drawableTop="@mipmap/toolbar_signin"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:text="签到"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="14sp"/>
 
-                        <ImageView
-                            android:id="@+id/iv_title_three"
-                            android:layout_width="55dp"
-                            android:layout_height="75dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginTop="10dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:src="@mipmap/toolbar_regist"/>
+                            <TextView
+                                android:id="@+id/iv_title_regist"
+                                android:layout_width="55dp"
+                                android:layout_height="75dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginTop="10dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:drawablePadding="5dp"
+                                android:drawableTop="@mipmap/toolbar_regist"
+                                android:gravity="center"
+                                android:padding="5dp"
+                                android:text="注册"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="14sp"
+                                />
+                        </LinearLayout>
 
-                    </LinearLayout>
+                    </ScrollView>
 
-                </ScrollView>
-
+                    <ImageView
+                        android:id="@+id/main_logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="10dp"
+                        android:background="@mipmap/logo"/>
+                </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 
             <FrameLayout
