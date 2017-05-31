@@ -8,9 +8,13 @@ import com.linzhi.isis.bean.login.UserInfoBean;
 import com.linzhi.isis.bean.regist.RegistBean;
 import com.linzhi.isis.bean.signin.SigninBeans;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import rx.Observable;
 
 /**
@@ -79,7 +83,7 @@ public interface MyHttpService {
     Observable<LoginBean<UserInfoBean>> login(@Field("username") String username, @Field("password") String password);
 
     /**
-     * 01 二维码
+     * 二维码/验证码 签到
      *
      * @param EmployeeID
      * @return
@@ -88,6 +92,20 @@ public interface MyHttpService {
     @POST("WeChat/WeChatSign")
     //post
     Observable<BaseBean> getQecode(@Field("EmployeeID") String EmployeeID);
+
+
+    /**
+     * 01 发短信
+     * 传递 参数和图片
+     *
+     * @return
+     */
+    @Multipart
+    @POST("WeChat/WeChatSign")
+    //post
+    Observable<BaseBean> sendMsg(@Part("Telephone") RequestBody Telephone
+            , @Part("EmployeeID") RequestBody EmployeeID
+            , @Part MultipartBody.Part file);
 
 
 }

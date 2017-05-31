@@ -14,9 +14,14 @@ import com.linzhi.isis.databinding.ActCodeInputBinding;
 import com.linzhi.isis.http.MyHttpService;
 import com.linzhi.isis.utils.ToastUtils;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static android.R.attr.apiKey;
 
 /**
  * Created by sjy on 2017/5/31.
@@ -58,6 +63,8 @@ public class CodeInputActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String code = bindView.etInputCode.getText().toString();
+
+
                 MyHttpService.Builder.getHttpServer()
                         .getQecode(code)//创建了被观察者Observable<>
                         .subscribeOn(Schedulers.io())//事件产生的线程,无数量上限的线程池的调度器,比Schedulers.newThread()更效率

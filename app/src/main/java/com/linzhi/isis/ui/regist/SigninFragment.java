@@ -17,6 +17,7 @@ import com.linzhi.isis.adapter.SigninAdapter;
 import com.linzhi.isis.app.Constants;
 import com.linzhi.isis.base.BaseFragment;
 import com.linzhi.isis.base.baseadapter.OnItemClickListener;
+import com.linzhi.isis.bean.BaseBean;
 import com.linzhi.isis.bean.signin.SigninBeans;
 import com.linzhi.isis.bean.signin.SigninDetailBean;
 import com.linzhi.isis.databinding.FragmentSigninBinding;
@@ -32,6 +33,11 @@ import com.linzhi.isis.utils.TimeUtil;
 import com.linzhi.isis.utils.ToastUtils;
 import com.linzhi.isis.view.FloatActionButton;
 
+import java.io.ByteArrayOutputStream;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -288,7 +294,45 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
                 break;
 
             case R.id.btn_tosend:
-                ToastUtils.ShortToast(activity, "发短信");
+                //获取参数
+                RequestBody requestPhone = RequestBody.create(MediaType.parse("multipart/form-data"), bean.getTelephone());
+                RequestBody requestCode = RequestBody.create(MediaType.parse("multipart/form-data"), bean.getEmployeeID());
+
+                //bitmap转成二进制流
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                qrcodeBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                // 创建MultipartBody.Part，用于封装文件数据
+                RequestBody requestBody = RequestBody.create(MediaType.parse("image/png"), byteArray);//content-type为image/png
+                MultipartBody.Part requestImgPart = MultipartBody.Part.createFormData("interactionFile", "qrcode.png", requestBody);
+
+                MyHttpService.Builder.getHttpServer()
+                        .sendMsg(requestPhone, requestCode, requestImgPart)//创建了被观察者Observable<>
+                        .subscribeOn(Schedulers.io())//事件产生的线程,无数量上限的线程池的调度器,比Schedulers.newThread()更效率
+                        .observeOn(AndroidSchedulers.mainThread())//消费的线程,指定的操作将在 Android 主线程运行
+                        .subscribe(new Observer<BaseBean>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(BaseBean baseBean) {
+                                if (baseBean.getCode().contains("1")) {
+                                    Log.d(TAG, "onNext: 发送短信成功");
+                                } else {
+                                    Log.d(TAG, "onNext: 发送短信失败");
+                                }
+                            }
+                        });
+
                 break;
 
             case R.id.item_qrcode://查看二维码

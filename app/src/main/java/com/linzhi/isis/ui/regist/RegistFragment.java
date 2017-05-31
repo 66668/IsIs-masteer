@@ -17,6 +17,7 @@ import com.linzhi.isis.adapter.RegistAdapter;
 import com.linzhi.isis.app.Constants;
 import com.linzhi.isis.base.BaseFragment;
 import com.linzhi.isis.base.baseadapter.OnItemClickListener;
+import com.linzhi.isis.bean.BaseBean;
 import com.linzhi.isis.bean.regist.RegistBean;
 import com.linzhi.isis.bean.regist.RegistDetailBean;
 import com.linzhi.isis.databinding.FragmentRegistBinding;
@@ -32,6 +33,12 @@ import com.linzhi.isis.utils.TimeUtil;
 import com.linzhi.isis.utils.ToastUtils;
 import com.linzhi.isis.view.FloatActionButton;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -66,6 +73,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
     private Bitmap qrcodeBitmap;
     private FloatActionButton floatActionButton;//+号控件
     private String employeeid;
+    private File file;
 
     @Override
     public int setContent() {
@@ -141,7 +149,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
         //                DebugUtil.error("----缓存: " + oneData);
         //            }
         //        }
-//        postDelayLoad();//
+        //        postDelayLoad();//
 
     }
 
@@ -289,8 +297,48 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
             case R.id.btn_log:
                 ToastUtils.ShortToast(activity, "打印");
                 break;
-            case R.id.btn_tosend:
-                ToastUtils.ShortToast(activity, "发短信");
+            case R.id.btn_tosend://发短信
+
+
+                //获取参数
+                RequestBody requestPhone = RequestBody.create(MediaType.parse("multipart/form-data"), bean.getTelephone());
+                RequestBody requestCode = RequestBody.create(MediaType.parse("multipart/form-data"), bean.getEmployeeID());
+
+                //bitmap转成二进制流
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                qrcodeBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                // 创建MultipartBody.Part，用于封装文件数据
+                RequestBody requestBody = RequestBody.create(MediaType.parse("image/png"), byteArray);//content-type为image/png
+                MultipartBody.Part requestImgPart = MultipartBody.Part.createFormData("interactionFile", "qrcode.png", requestBody);
+
+                MyHttpService.Builder.getHttpServer()
+                        .sendMsg(requestPhone, requestCode, requestImgPart)//创建了被观察者Observable<>
+                        .subscribeOn(Schedulers.io())//事件产生的线程,无数量上限的线程池的调度器,比Schedulers.newThread()更效率
+                        .observeOn(AndroidSchedulers.mainThread())//消费的线程,指定的操作将在 Android 主线程运行
+                        .subscribe(new Observer<BaseBean>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(BaseBean baseBean) {
+                                if (baseBean.getCode().contains("1")) {
+                                    Log.d(TAG, "onNext: 发送短信成功");
+                                } else {
+                                    Log.d(TAG, "onNext: 发送短信失败");
+                                }
+                            }
+                        });
+
                 break;
             case R.id.floatActionButton://添加新员工
 
@@ -310,10 +358,12 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
 
                 if (!employeeid.equals("")) {
                     qrcodeImg = bindingView.imgQrcode;
-                    //调用二维码代码
+                    //调用二维码代码,生成bitmap
                     try {
                         qrcodeBitmap = EncodingHandler.createQRCode(employeeid, DpUtils.dp2px(activity, 300));//设置225dp
 
+                        //将bitmap转成file
+                        //                        file = ImageUtils.savePictureAsFile(getActivity(), qrcodeBitmap);
                     } catch (WriterException e) {
                         e.printStackTrace();
                         Log.d(TAG, "onClick: WriterException=" + e.getMessage());
