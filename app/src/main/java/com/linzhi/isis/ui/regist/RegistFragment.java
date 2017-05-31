@@ -333,8 +333,10 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
                             public void onNext(BaseBean baseBean) {
                                 if (baseBean.getCode().contains("1")) {
                                     Log.d(TAG, "onNext: 发送短信成功");
+                                    ToastUtils.ShortToast(getActivity(), "发送短信成功");
                                 } else {
                                     Log.d(TAG, "onNext: 发送短信失败");
+                                    ToastUtils.ShortToast(getActivity(), "发送短信失败");
                                 }
                             }
                         });

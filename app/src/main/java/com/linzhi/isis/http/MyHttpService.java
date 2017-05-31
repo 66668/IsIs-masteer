@@ -101,7 +101,7 @@ public interface MyHttpService {
      * @return
      */
     @Multipart
-    @POST("WeChat/WeChatSign")
+    @POST("VFaceMember/SendAuthCode")
     //post
     Observable<BaseBean> sendMsg(@Part("Telephone") RequestBody Telephone
             , @Part("EmployeeID") RequestBody EmployeeID
