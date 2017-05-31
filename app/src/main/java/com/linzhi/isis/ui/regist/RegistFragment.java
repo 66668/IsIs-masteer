@@ -182,7 +182,7 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
          * 后台线程取数据，主线程显示』的程序策略
          */
 
-        Subscription subscription = MyHttpService.Builder.getRegistService()
+        Subscription subscription = MyHttpService.Builder.getHttpServer()
                 .GetSearchRegistList(companyid, conferenceID, "")//创建了被观察者Observable<>
                 .subscribeOn(Schedulers.io())//事件产生的线程,无数量上限的线程池的调度器,比Schedulers.newThread()更效率
                 .observeOn(AndroidSchedulers.mainThread())//消费的线程,指定的操作将在 Android 主线程运行

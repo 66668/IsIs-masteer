@@ -1,6 +1,7 @@
 package com.linzhi.isis.ui.regist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,11 +24,13 @@ import com.linzhi.isis.http.MyHttpService;
 import com.linzhi.isis.http.cache.ACache;
 import com.linzhi.isis.qrcode.encoding.EncodingHandler;
 import com.linzhi.isis.ui.MainActivity;
+import com.linzhi.isis.ui.QrcodeCaptureActivity;
 import com.linzhi.isis.utils.DebugUtil;
 import com.linzhi.isis.utils.DpUtils;
 import com.linzhi.isis.utils.SPUtils;
 import com.linzhi.isis.utils.TimeUtil;
 import com.linzhi.isis.utils.ToastUtils;
+import com.linzhi.isis.view.FloatActionButton;
 
 import rx.Observer;
 import rx.Subscription;
@@ -40,7 +43,7 @@ import rx.schedulers.Schedulers;
 
 public class SigninFragment extends BaseFragment<FragmentSigninBinding> implements View.OnClickListener {
     private static final String TAG = "SigninFragment";
-
+    private final static int SCANNIN_GREQUEST_CODE = 1;
     // 初始化完成后加载数据
     private boolean isPrepared = false;
 
@@ -62,6 +65,7 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
     private ImageView qrcodeImg;
     private Bitmap qrcodeBitmap;
     private String employeeid;
+    private FloatActionButton floatActionButton;//小图标
 
     @Override
     public int setContent() {
@@ -133,7 +137,7 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
         //                DebugUtil.error("----缓存: " + oneData);
         //            }
         //        }
-//        postDelayLoad();//databinding.FragmentSigninBinding.listOne' on a null object reference
+        //        postDelayLoad();//databinding.FragmentSigninBinding.listOne' on a null object reference
 
     }
 
@@ -196,7 +200,7 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
          * 后台线程取数据，主线程显示』的程序策略
          */
 
-        Subscription subscription = MyHttpService.Builder.getRegistService()
+        Subscription subscription = MyHttpService.Builder.getHttpServer()
                 .GetSearchSigninList(companyid, conferenceID, "")//创建了被观察者Observable<>
                 .subscribeOn(Schedulers.io())//事件产生的线程,无数量上限的线程池的调度器,比Schedulers.newThread()更效率
                 .observeOn(AndroidSchedulers.mainThread())//消费的线程,指定的操作将在 Android 主线程运行
@@ -266,6 +270,8 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
         bindingView.btnLog.setOnClickListener(this);
         bindingView.btnTosend.setOnClickListener(this);
         bindingView.itemQrcode.setOnClickListener(this);
+        bindingView.floatActionButton.setOnClickListener(this);
+
     }
 
     //监听
@@ -276,13 +282,16 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
                 bindingView.layoutQRcode.setVisibility(View.GONE);//二维码布局消失
                 bindingView.scrollViewDetail.setVisibility(View.VISIBLE);//详细界面显示
                 break;
+
             case R.id.btn_log:
                 ToastUtils.ShortToast(activity, "打印");
                 break;
+
             case R.id.btn_tosend:
                 ToastUtils.ShortToast(activity, "发短信");
                 break;
-            case R.id.item_qrcode:
+
+            case R.id.item_qrcode://查看二维码
                 //用registDetailBean的companyid生成二维码
                 if (bean != null) {
                     employeeid = bean.getEmployeeID();
@@ -311,6 +320,14 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
                 } else {
                     ToastUtils.ShortToast(activity, "没有获取字符串，请切换用户试一试");
                 }
+                break;
+
+            case R.id.floatActionButton://二维码签到
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), QrcodeCaptureActivity.class);//QrcodeCaptureActivity.class CodeInputActivity.class
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+
                 break;
         }
 

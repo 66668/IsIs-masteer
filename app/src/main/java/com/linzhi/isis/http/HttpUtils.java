@@ -42,10 +42,7 @@ public class HttpUtils {
     private static HttpUtils instance;
     private Gson gson;
     private Context context;
-    private Object registHttps;
-    private Object addNewHttps;
-    private Object loginHttps;
-    private Object ConferenceHttps;
+    private Object https;
 
     private boolean debug;//判断 app版本，由application设置
 
@@ -83,70 +80,14 @@ public class HttpUtils {
      * @param <T>
      * @return
      */
-    public <T> T loginServer(Class<T> clz) {
-        if (loginHttps == null) {
+    public <T> T getServer(Class<T> clz) {
+        if (https == null) {
             synchronized (HttpUtils.class) {
-                loginHttps = getRetrofitBuilder(API_BASE_URL).build().create(clz);
+                https = getRetrofitBuilder(API_BASE_URL).build().create(clz);
             }
         }
-        return (T) loginHttps;
+        return (T) https;
     }
-
-
-    /**
-     * 02 选择会议
-     *
-     * @param clz
-     * @param <T>
-     * @return
-     */
-    public <T> T getConferenceServer(Class<T> clz) {
-        if (ConferenceHttps == null) {
-            synchronized (HttpUtils.class) {
-                if (ConferenceHttps == null) {
-                    ConferenceHttps = getRetrofitBuilder(API_BASE_URL).build().create(clz);
-                }
-            }
-        }
-        return (T) ConferenceHttps;
-    }
-
-    /**
-     * 03-01 注册
-     *
-     * @param clz
-     * @param <T>
-     * @return
-     */
-    public <T> T getRegistServer(Class<T> clz) {
-        if (registHttps == null) {
-            synchronized (HttpUtils.class) {
-                if (registHttps == null) {
-                    registHttps = getRetrofitBuilder(API_BASE_URL).build().create(clz);
-                }
-            }
-        }
-        return (T) registHttps;
-    }
-
-    /**
-     * 03-02 添加新人员
-     *
-     * @param clz
-     * @param <T>
-     * @return
-     */
-    public <T> T addNewSerVer(Class<T> clz) {
-        if (addNewHttps == null) {
-            synchronized (HttpUtils.class) {
-                if (addNewHttps == null) {
-                    addNewHttps = getRetrofitBuilder(API_BASE_URL).build().create(clz);
-                }
-            }
-        }
-        return (T) addNewHttps;
-    }
-
 
     /**
      * retrofit配置 方式1

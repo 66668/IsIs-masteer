@@ -111,7 +111,7 @@ public class AddNewActivity extends BaseActivity2<ActAddnewBinding> implements V
         //
         String str = (new Gson()).toJson(bean).toString();
         Log.d(TAG, "commintData: json=" + str);
-        Subscription subscription = MyHttpService.Builder.AddNewService().AddnewEmployee(str)
+        Subscription subscription = MyHttpService.Builder.getHttpServer().AddnewEmployee(str)
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

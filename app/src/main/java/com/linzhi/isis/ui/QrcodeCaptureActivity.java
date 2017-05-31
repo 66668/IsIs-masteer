@@ -10,32 +10,43 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 import com.linzhi.isis.R;
+import com.linzhi.isis.bean.BaseBean;
+import com.linzhi.isis.http.MyHttpService;
 import com.linzhi.isis.qrcode.camera.CameraManager;
 import com.linzhi.isis.qrcode.decoding.CaptureActivityHandler;
 import com.linzhi.isis.qrcode.decoding.InactivityTimer;
 import com.linzhi.isis.qrcode.view.ViewfinderView;
+import com.linzhi.isis.utils.ToastUtils;
 
 import java.io.IOException;
 import java.util.Vector;
 
+import rx.Observer;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 
 /**
- * Initial the camera
+ * 二维码相机
+ *
  * @author Ryan.Tang
  */
-public class MipCaptureActivity extends Activity implements Callback {
+public class QrcodeCaptureActivity extends Activity implements Callback {
 
+    private static final String TAG = "QrcodeCaptureActivity";
     private CaptureActivityHandler handler;
     private ViewfinderView viewfinderView;
     private boolean hasSurface;
@@ -44,8 +55,12 @@ public class MipCaptureActivity extends Activity implements Callback {
     private InactivityTimer inactivityTimer;
     private MediaPlayer mediaPlayer;
     private boolean playBeep;
-    private static final float BEEP_VOLUME = 0.10f;
+    private static final float BEEP_VOLUME = 0.1f;
     private boolean vibrate;
+    private Button mButtonBack;
+    private TextView toCode;
+
+    private static boolean mOrientationFlag = true;
 
     /**
      * Called when the activity is first created.
@@ -54,26 +69,49 @@ public class MipCaptureActivity extends Activity implements Callback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
+
+        initMyView();
+        initListener();
+
+    }
+
+    private void initMyView() {
         //ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
         CameraManager.init(getApplication());
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_view);
 
-        Button mButtonBack = (Button) findViewById(R.id.button_back);
+        mButtonBack = (Button) findViewById(R.id.button_back);
+        toCode = (TextView) findViewById(R.id.tv_right);
+        hasSurface = false;
+        inactivityTimer = new InactivityTimer(this);
+
+    }
+
+    private void initListener() {
         mButtonBack.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                MipCaptureActivity.this.finish();
+                QrcodeCaptureActivity.this.finish();
 
             }
         });
-        hasSurface = false;
-        inactivityTimer = new InactivityTimer(this);
+
+        toCode.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QrcodeCaptureActivity.this, CodeInputActivity.class);
+                startActivity(intent);
+                QrcodeCaptureActivity.this.finish();
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
         SurfaceHolder surfaceHolder = surfaceView.getHolder();
         if (hasSurface) {
@@ -103,6 +141,11 @@ public class MipCaptureActivity extends Activity implements Callback {
             handler = null;
         }
         CameraManager.get().closeDriver();
+        if (!hasSurface) {
+            SurfaceView surfaceView = (SurfaceView) findViewById(R.id.preview_view);
+            SurfaceHolder surfaceHolder = surfaceView.getHolder();
+            surfaceHolder.removeCallback(this);
+        }
     }
 
     @Override
@@ -121,17 +164,53 @@ public class MipCaptureActivity extends Activity implements Callback {
         inactivityTimer.onActivity();
         playBeepSoundAndVibrate();
         String resultString = result.getText();
+
         if (resultString.equals("")) {
-            Toast.makeText(MipCaptureActivity.this, "Scan failed!", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "handleDecode: resultString=" + "没有获取");
+
         } else {
-            Intent resultIntent = new Intent();
-            Bundle bundle = new Bundle();
-            bundle.putString("result", resultString);
-            bundle.putParcelable("bitmap", barcode);
-            resultIntent.putExtras(bundle);
-            this.setResult(RESULT_OK, resultIntent);
+            //返回
+
+            Log.d(TAG, "handleDecode: resultString=" + resultString);
+
+            //调用接口
+            Subscription subscription = MyHttpService.Builder.getHttpServer()
+                    .getQecode(resultString)//创建了被观察者Observable<>
+                    .subscribeOn(Schedulers.io())//事件产生的线程,无数量上限的线程池的调度器,比Schedulers.newThread()更效率
+                    .observeOn(AndroidSchedulers.mainThread())//消费的线程,指定的操作将在 Android 主线程运行
+                    .subscribe(new Observer<BaseBean>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d(TAG, "onError: " + e.toString());
+                            ToastUtils.ShortToast(QrcodeCaptureActivity.this, e.toString());
+                        }
+
+                        @Override
+                        public void onNext(BaseBean baseBean) {
+
+                            if (baseBean.getCode().contains("1")) {
+                                ToastUtils.ShortToast(QrcodeCaptureActivity.this, baseBean.getMessage());
+                                QrcodeCaptureActivity.this.finish();
+                            } else {
+                                ToastUtils.ShortToast(QrcodeCaptureActivity.this, baseBean.getMessage());
+                                QrcodeCaptureActivity.this.finish();
+                            }
+                        }
+                    });
+
+            //            Intent resultIntent = new Intent();
+            //            Bundle bundle = new Bundle();
+            //            bundle.putString("result", resultString);
+            //            bundle.putParcelable("bitmap", barcode);
+            //            resultIntent.putExtras(bundle);
+            //            this.setResult(RESULT_OK, resultIntent);
         }
-        MipCaptureActivity.this.finish();
+        //        QrcodeCaptureActivity.this.finish();
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {
@@ -148,26 +227,6 @@ public class MipCaptureActivity extends Activity implements Callback {
         }
     }
 
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width,
-                               int height) {
-
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        if (!hasSurface) {
-            hasSurface = true;
-            initCamera(holder);
-        }
-
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        hasSurface = false;
-
-    }
 
     public ViewfinderView getViewfinderView() {
         return viewfinderView;
@@ -227,4 +286,25 @@ public class MipCaptureActivity extends Activity implements Callback {
         }
     };
 
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width,
+                               int height) {
+
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        if (!hasSurface) {
+            hasSurface = true;
+            initCamera(holder);
+        }
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        hasSurface = false;
+
+    }
 }

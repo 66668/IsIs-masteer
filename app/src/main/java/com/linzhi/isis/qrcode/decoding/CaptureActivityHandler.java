@@ -30,7 +30,7 @@ import com.google.zxing.Result;
 import com.linzhi.isis.R;
 import com.linzhi.isis.qrcode.camera.CameraManager;
 import com.linzhi.isis.qrcode.view.ViewfinderResultPointCallback;
-import com.linzhi.isis.ui.MipCaptureActivity;
+import com.linzhi.isis.ui.QrcodeCaptureActivity;
 
 import java.util.Vector;
 
@@ -41,7 +41,7 @@ public final class CaptureActivityHandler extends Handler {
 
   private static final String TAG = CaptureActivityHandler.class.getSimpleName();
 
-  private final MipCaptureActivity activity;
+  private final QrcodeCaptureActivity activity;
   private final DecodeThread decodeThread;
   private State state;
 
@@ -51,7 +51,7 @@ public final class CaptureActivityHandler extends Handler {
     DONE
   }
 
-  public CaptureActivityHandler(MipCaptureActivity activity, Vector<BarcodeFormat> decodeFormats,
+  public CaptureActivityHandler(QrcodeCaptureActivity activity, Vector<BarcodeFormat> decodeFormats,
                                 String characterSet) {
     this.activity = activity;
     decodeThread = new DecodeThread(activity, decodeFormats, characterSet,

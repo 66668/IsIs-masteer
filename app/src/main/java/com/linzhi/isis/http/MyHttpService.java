@@ -22,37 +22,11 @@ public interface MyHttpService {
     class Builder {
 
         /**
-         * 登录
-         *
          * @return
          */
-        public static MyHttpService loginService() {
-            return HttpUtils.getInstance().loginServer(MyHttpService.class);
+        public static MyHttpService getHttpServer() {
+            return HttpUtils.getInstance().getServer(MyHttpService.class);
         }
-
-        /**
-         * 会议
-         */
-        public static MyHttpService getConferenceService() {
-            return HttpUtils.getInstance().getConferenceServer(MyHttpService.class);
-        }
-
-        /**
-         * 获取注册-签到列表服务
-         */
-        public static MyHttpService getRegistService() {
-            return HttpUtils.getInstance().getRegistServer(MyHttpService.class);
-        }
-
-        /**
-         * 添加新人员
-         *
-         * @return
-         */
-        public static MyHttpService AddNewService() {
-            return HttpUtils.getInstance().getRegistServer(MyHttpService.class);
-        }
-
 
     }
 
@@ -103,6 +77,17 @@ public interface MyHttpService {
     @POST("User/LoginByPassword")
     //post
     Observable<LoginBean<UserInfoBean>> login(@Field("username") String username, @Field("password") String password);
+
+    /**
+     * 01 二维码
+     *
+     * @param EmployeeID
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("WeChat/WeChatSign")
+    //post
+    Observable<BaseBean> getQecode(@Field("EmployeeID") String EmployeeID);
 
 
 }

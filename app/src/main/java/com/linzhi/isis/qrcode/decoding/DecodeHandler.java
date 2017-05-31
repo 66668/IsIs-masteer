@@ -31,7 +31,7 @@ import com.google.zxing.common.HybridBinarizer;
 import com.linzhi.isis.R;
 import com.linzhi.isis.qrcode.camera.CameraManager;
 import com.linzhi.isis.qrcode.camera.PlanarYUVLuminanceSource;
-import com.linzhi.isis.ui.MipCaptureActivity;
+import com.linzhi.isis.ui.QrcodeCaptureActivity;
 
 import java.util.Hashtable;
 
@@ -40,10 +40,10 @@ final class DecodeHandler extends Handler {
 
   private static final String TAG = DecodeHandler.class.getSimpleName();
 
-  private final MipCaptureActivity activity;
+  private final QrcodeCaptureActivity activity;
   private final MultiFormatReader multiFormatReader;
 
-  DecodeHandler(MipCaptureActivity activity, Hashtable<DecodeHintType, Object> hints) {
+  DecodeHandler(QrcodeCaptureActivity activity, Hashtable<DecodeHintType, Object> hints) {
     multiFormatReader = new MultiFormatReader();
     multiFormatReader.setHints(hints);
     this.activity = activity;

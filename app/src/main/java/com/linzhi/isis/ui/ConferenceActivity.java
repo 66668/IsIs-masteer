@@ -89,7 +89,7 @@ public class ConferenceActivity extends BaseActivity2<ActConferenceBinding> {
             aCache = ACache.get(ConferenceActivity.this);
         }
 
-        Subscription get = MyHttpService.Builder.getConferenceService()
+        Subscription get = MyHttpService.Builder.getHttpServer()
                 .getConferenceList(aCache.getAsString(Constants.STORE_ID))//"fa3df134-7fc7-4623-879e-24165d286568"
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

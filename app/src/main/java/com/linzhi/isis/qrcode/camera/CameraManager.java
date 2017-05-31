@@ -38,10 +38,10 @@ public final class CameraManager {
 
   private static final String TAG = CameraManager.class.getSimpleName();
 
-  private static final int MIN_FRAME_WIDTH = 240;
-  private static final int MIN_FRAME_HEIGHT = 240;
-  private static final int MAX_FRAME_WIDTH = 480;
-  private static final int MAX_FRAME_HEIGHT = 360;
+  private static final int MIN_FRAME_WIDTH = 600;//使用xxhdpi的2.5px=1dp
+  private static final int MIN_FRAME_HEIGHT = 600;
+  private static final int MAX_FRAME_WIDTH = 900;
+  private static final int MAX_FRAME_HEIGHT = 900;
 
   private static CameraManager cameraManager;
 
@@ -255,10 +255,13 @@ public final class CameraManager {
 //      rect.right = rect.right * cameraResolution.x / screenResolution.x;
 //      rect.top = rect.top * cameraResolution.y / screenResolution.y;
 //      rect.bottom = rect.bottom * cameraResolution.y / screenResolution.y;
+
+
       rect.left = rect.left * cameraResolution.y / screenResolution.x;
       rect.right = rect.right * cameraResolution.y / screenResolution.x;
       rect.top = rect.top * cameraResolution.x / screenResolution.y;
       rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y;
+
       framingRectInPreview = rect;
     }
     return framingRectInPreview;
