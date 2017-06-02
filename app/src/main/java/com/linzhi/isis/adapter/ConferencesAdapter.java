@@ -45,19 +45,19 @@ public class ConferencesAdapter extends BaseRecyclerViewAdapter<ConferenceDetail
         }
 
         @Override
-        public void onBindViewHolder(final ConferenceDetailBean positionData, final int position) {
-            if (positionData != null) {
-                binding.setBean(positionData);
+        public void onBindViewHolder(final ConferenceDetailBean bean, final int position) {
+            if (bean != null) {
+                binding.setBean(bean);
                 // 图片
-                //                ImgLoadUtil.displayEspImage(positionData.getImages().getLarge(), binding.ivOnePhoto,0);
+                //                ImgLoadUtil.displayEspImage(bean.getImages().getLarge(), binding.ivOnePhoto,0);
                 // 导演
-                //                binding.tvOneDirectors.setText(StringFormatUtil.formatName(positionData.getDirectors()));
+                //                binding.tvOneDirectors.setText(StringFormatUtil.formatName(bean.getDirectors()));
                 // 主演
-                //                binding.tvOneCasts.setText(StringFormatUtil.formatName(positionData.getCasts()));
+                //                binding.tvOneCasts.setText(StringFormatUtil.formatName(bean.getCasts()));
                 // 类型
-                //                binding.tvOneGenres.setText("类型：" + StringFormatUtil.formatGenres(positionData.getGenres()));
+                //                binding.tvOneGenres.setText("类型：" + StringFormatUtil.formatGenres(bean.getGenres()));
                 // 评分
-                //                binding.tvOneRatingRate.setText("评分：" + String.valueOf(positionData.getRating().getAverage()));
+                //                binding.tvOneRatingRate.setText("评分：" + String.valueOf(bean.getRating().getAverage()));
                 // 分割线颜色
 
                 ViewHelper.setScaleX(itemView, 0.8f);
@@ -75,8 +75,8 @@ public class ConferencesAdapter extends BaseRecyclerViewAdapter<ConferenceDetail
                         if (acache == null) {
                             acache = ACache.get(activity);
                         }
-                        Log.d(TAG, "onNoDoubleClick: 选中会议跳转 =" + positionData.getConferenceID());
-                        acache.put(Constants.CONFERENCE_ID, positionData.getConferenceID());
+                        Log.d(TAG, "onNoDoubleClick: 选中会议跳转 =" + bean.getConferenceID());
+                        acache.put(Constants.CONFERENCE_ID, bean.getConferenceID());
 
                         // 页面跳转
                         Intent intent = new Intent(activity, MainActivity.class);

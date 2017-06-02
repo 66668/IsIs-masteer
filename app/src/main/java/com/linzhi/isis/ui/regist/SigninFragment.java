@@ -44,7 +44,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by sjy on 2017/5/8.
+ * 签到
  */
 
 public class SigninFragment extends BaseFragment<FragmentSigninBinding> implements View.OnClickListener {

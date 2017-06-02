@@ -225,10 +225,6 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
                             mIsLoading = false;
                         }
 
-                        //构造器中，第一个参数表示列数或者行数，第二个参数表示滑动方向,瀑布流
-                        //                        bindingContentView.listOne.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL));
-                        // GridView
-                        //                        bindingContentView.listOne.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                     }
                 });
         addSubscription(subscription);//保存订阅
@@ -275,7 +271,8 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
     @Override
     public void onResume() {
         super.onResume();
-        DebugUtil.error("--RegistFragment   ----onResume");
+        loadRegistData();
+
     }
 
     private void initListener() {

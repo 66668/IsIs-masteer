@@ -23,7 +23,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by sjy on 2017/5/26.
+ * 注册新人员
  */
 
 public class AddNewActivity extends BaseActivity2<ActAddnewBinding> implements View.OnClickListener {

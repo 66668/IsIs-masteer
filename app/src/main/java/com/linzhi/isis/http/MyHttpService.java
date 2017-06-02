@@ -35,15 +35,6 @@ public interface MyHttpService {
     }
 
     /**
-     * 03-02 获取签到列表, 也包括查询
-     */
-    @FormUrlEncoded
-    @POST("EmployeeSearch/GetEmployeeSearch")
-    Observable<SigninBeans> GetSearchSigninList(@Field("CompanyID") String CompanyID
-            , @Field("ConferenceID") String ConferenceID
-            , @Field("NameorPhoneorStore") String Telephone);
-
-    /**
      * 03-01-01 添加新人员
      */
     @FormUrlEncoded
@@ -52,10 +43,20 @@ public interface MyHttpService {
 
 
     /**
+     * 03-02 获取签到列表, 也包括查询
+     */
+    @FormUrlEncoded
+    @POST("SignEmployeeSearch/GetSignEmployeeSearch")//EmployeeSearch/GetEmployeeSearch
+    Observable<SigninBeans> GetSearchSigninList(@Field("CompanyID") String CompanyID
+            , @Field("ConferenceID") String ConferenceID
+            , @Field("NameorPhoneorStore") String Telephone);
+
+
+    /**
      * 03-01 获取注册列表, 也包括查询
      */
     @FormUrlEncoded
-    @POST("EmployeeSearch/GetEmployeeSearch")
+    @POST("RgEmployeeSearch/GetRgEmployeeSearch")
     Observable<RegistBean> GetSearchRegistList(@Field("CompanyID") String CompanyID
             , @Field("ConferenceID") String ConferenceID
             , @Field("NameorPhoneorStore") String Telephone);

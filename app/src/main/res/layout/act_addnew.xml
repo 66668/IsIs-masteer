@@ -117,10 +117,11 @@
                         android:id="@+id/et_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:addTextChangedListener="@{addEvent.telephoneWatcher}"
                         android:background="@null"
                         android:gravity="left"
                         android:hint="@string/telephone_hint"
-                        android:addTextChangedListener="@{addEvent.telephoneWatcher}"
+                        android:inputType="number"
                         android:padding="5dp"
                         android:paddingLeft="20dp"
                         android:text="@{addNewBean.telephone}"
@@ -160,10 +161,10 @@
                         android:textSize="14sp"/>
 
                     <EditText
-                        android:addTextChangedListener="@{addEvent.weChatWatcher}"
                         android:id="@+id/et_weChat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:addTextChangedListener="@{addEvent.weChatWatcher}"
                         android:background="@null"
                         android:gravity="left"
                         android:hint="@string/weChat_hint"
@@ -206,10 +207,10 @@
                         android:textSize="14sp"/>
 
                     <EditText
-                        android:addTextChangedListener="@{addEvent.emailWatcher}"
                         android:id="@+id/et_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:addTextChangedListener="@{addEvent.emailWatcher}"
                         android:background="@null"
                         android:gravity="left"
                         android:hint="@string/email_hint"
@@ -252,10 +253,10 @@
                         android:textSize="14sp"/>
 
                     <EditText
-                        android:addTextChangedListener="@{addEvent.storeWatcher}"
                         android:id="@+id/et_store"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:addTextChangedListener="@{addEvent.storeWatcher}"
                         android:background="@null"
                         android:gravity="left"
                         android:hint="@string/store_hint"
@@ -298,10 +299,10 @@
                         android:textSize="14sp"/>
 
                     <EditText
-                        android:addTextChangedListener="@{addEvent.positionWatcher}"
                         android:id="@+id/et_position"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:addTextChangedListener="@{addEvent.positionWatcher}"
                         android:background="@null"
                         android:gravity="left"
                         android:hint="@string/position_hint"
@@ -344,10 +345,10 @@
                         android:textSize="14sp"/>
 
                     <EditText
-                        android:addTextChangedListener="@{addEvent.industryWatcher}"
                         android:id="@+id/et_hangye"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:addTextChangedListener="@{addEvent.industryWatcher}"
                         android:background="@null"
                         android:gravity="left"
                         android:hint="@string/hangye_hint"

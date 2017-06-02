@@ -12,13 +12,12 @@
                     android:id="@+id/ll_item_top"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
                     android:background="@android:color/white"
                     android:orientation="vertical">
-        <!-- android:layout_width="227dp"
-                    android:layout_height="180dp"-->
+        <!-- 自定义属性：android:showConferenceImg ，在ImgLoadUtil.java中定义-->
         <ImageView
             android:id="@+id/img_conference"
             android:layout_width="wrap_content"
