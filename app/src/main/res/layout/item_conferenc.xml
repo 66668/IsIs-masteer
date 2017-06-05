@@ -17,12 +17,16 @@
                     android:layout_marginTop="10dp"
                     android:background="@android:color/white"
                     android:orientation="vertical">
-        <!-- 自定义属性：android:showConferenceImg ，在ImgLoadUtil.java中定义-->
+        <!-- 自定义属性：android:showConferenceImg ，在ImgLoadUtil.java中定义
+        android:scaleType="centerCrop"//加这句解决或者换一张能填满控件的占位图。-->
         <ImageView
             android:id="@+id/img_conference"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/conference_detail_width"
+            android:layout_height="@dimen/conference_detail_height"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:scaleType="centerCrop"
             android:layout_centerHorizontal="true"
             android:showConferenceImg="@{bean.fileUrl}"/>
 

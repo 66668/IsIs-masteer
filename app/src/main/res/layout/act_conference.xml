@@ -14,7 +14,7 @@
         >
 
         <android.support.v7.widget.RecyclerView
-            android:background="@android:color/darker_gray"
+            android:background="@color/gray_common"
             android:id="@+id/xrv_conference"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

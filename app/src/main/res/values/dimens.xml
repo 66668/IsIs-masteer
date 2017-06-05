@@ -28,8 +28,8 @@
     <dimen name="movie_detail_width">125dp</dimen>
     <dimen name="movie_detail_height">165dp</dimen>
 
-    <!--会议列表图片宽高-->
-    <dimen name="conference_detail_width">227dp</dimen>
+    <!--会议列表图片宽高 227 180 -->
+    <dimen name="conference_detail_width">250dp</dimen>
     <dimen name="conference_detail_height">180dp</dimen>
 
     <!--书籍详情图片的宽高-->

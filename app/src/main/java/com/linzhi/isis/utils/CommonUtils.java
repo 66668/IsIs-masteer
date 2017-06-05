@@ -78,6 +78,7 @@ public class CommonUtils {
         return getResoure().getString(resid);
     }
 
+    //
     public static float getDimens(int resId) {
         return getResoure().getDimension(resId);
     }

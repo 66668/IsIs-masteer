@@ -277,7 +277,6 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
 
     private void initListener() {
         bindingView.closeQrcode.setOnClickListener(this);
-        bindingView.btnLog.setOnClickListener(this);
         bindingView.btnTosend.setOnClickListener(this);
         bindingView.itemQrcode.setOnClickListener(this);
         bindingView.floatActionButton.setOnClickListener(this);
@@ -290,9 +289,6 @@ public class RegistFragment extends BaseFragment<FragmentRegistBinding> implemen
             case R.id.close_qrcode://关闭二维码
                 bindingView.layoutQRcode.setVisibility(View.GONE);//二维码布局消失
                 bindingView.scrollViewDetail.setVisibility(View.VISIBLE);//详细界面显示
-                break;
-            case R.id.btn_log:
-                ToastUtils.ShortToast(activity, "打印");
                 break;
             case R.id.btn_tosend://发短信
 

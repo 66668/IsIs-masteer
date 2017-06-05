@@ -273,7 +273,6 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
 
     private void initListener() {
         bindingView.closeQrcode.setOnClickListener(this);
-        bindingView.btnLog.setOnClickListener(this);
         bindingView.btnTosend.setOnClickListener(this);
         bindingView.itemQrcode.setOnClickListener(this);
         bindingView.floatActionButton.setOnClickListener(this);
@@ -288,11 +287,6 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
                 bindingView.layoutQRcode.setVisibility(View.GONE);//二维码布局消失
                 bindingView.scrollViewDetail.setVisibility(View.VISIBLE);//详细界面显示
                 break;
-
-            case R.id.btn_log:
-                ToastUtils.ShortToast(activity, "打印");
-                break;
-
             case R.id.btn_tosend:
                 //获取参数
                 RequestBody requestPhone = RequestBody.create(MediaType.parse("multipart/form-data"), bean.getTelephone());

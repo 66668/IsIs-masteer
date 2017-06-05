@@ -2,6 +2,7 @@ package com.linzhi.isis.utils;
 
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +30,31 @@ public class ImgLoadUtil {
     }
 
     /**
+     * 会议列表图片
+     * <p>
+     * 该方式获取的图片按原大小展示，如果后台图片不统一，最好不要用
+     * .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+     * <p>
+     * //设置成统一的样式，即使后台图片不统一，也可以在展示的时候界面统一,但是这里使用，没有效果
+     * .override((int) CommonUtils.getDimens(R.dimen.conference_detail_height)//conference_detail_width
+     * , (int) CommonUtils.getDimens(R.dimen.conference_detail_height))
+     */
+    @BindingAdapter("android:showConferenceImg")
+    public static void showConferenceImg(ImageView imageView, String url) {
+
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300f, imageView.getContext().getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 180f, imageView.getContext().getResources().getDisplayMetrics());
+
+        Glide.with(imageView.getContext())
+                .load(url)//url
+                .override(width, height)
+                .crossFade(500)//动画效果
+                .placeholder(getDefaultPic(0))
+                .error(getDefaultPic(0))
+                .into(imageView);
+    }
+
+    /**
      * 书籍、妹子图、电影列表图
      * 默认图区别
      */
@@ -41,6 +67,7 @@ public class ImgLoadUtil {
                 .into(imageView);
     }
 
+    //图片下载失败显示默认的图片
     private static int getDefaultPic(int type) {
         switch (type) {
             case 0:// 电影
@@ -139,17 +166,4 @@ public class ImgLoadUtil {
     }
 
 
-    /**
-     * 会议列表图片
-     */
-    @BindingAdapter("android:showConferenceImg")
-    public static void showConferenceImg(ImageView imageView, String url) {
-        Glide.with(imageView.getContext())
-                .load(url)
-                .crossFade(500)
-                .override((int) CommonUtils.getDimens(R.dimen.conference_detail_width),(int) CommonUtils.getDimens(R.dimen.conference_detail_height))
-                .placeholder(getDefaultPic(0))
-                .error(getDefaultPic(0))
-                .into(imageView);
-    }
 }
