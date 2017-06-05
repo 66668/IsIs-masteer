@@ -6,10 +6,14 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.zxing.WriterException;
 import com.linzhi.isis.R;
@@ -66,6 +70,12 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
     private String conferenceID;
     private String companyid;
 
+    //搜索
+    private String strSearch = "";
+    private boolean isSearch = true;//搜索框是否是搜索状态，是--》点击搜索查人员，同时改变成 取消状态；否--》点击后取消查询，改变成搜索状态
+    private EditText etSearch;
+    private TextView tvSearch;
+
     //二维码 参数
     private SigninDetailBean bean;
     private ImageView qrcodeImg;
@@ -88,7 +98,7 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         showContentView();
-
+        initMyView();
         aCache = ACache.get(getActivity());
         signinAdapter = new SigninAdapter(activity);
         registBean = (SigninBeans) aCache.getAsObject(Constants.SIGIN_TAG);
@@ -96,6 +106,15 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
 
         initListener();
         loadSignData();
+    }
+
+    private void initMyView() {
+        qrcodeImg = bindingView.imgQrcode;
+        etSearch = bindingView.etSearch;
+        tvSearch = bindingView.tvSearch;
+        //默认显示
+        bindingView.layoutQRcode.setVisibility(View.GONE);
+        bindingView.scrollViewDetail.setVisibility(View.VISIBLE);
     }
 
 
@@ -207,7 +226,7 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
          */
 
         Subscription subscription = MyHttpService.Builder.getHttpServer()
-                .GetSearchSigninList(companyid, conferenceID, "")//创建了被观察者Observable<>
+                .GetSearchSigninList(companyid, conferenceID, strSearch)//创建了被观察者Observable<>
                 .subscribeOn(Schedulers.io())//事件产生的线程,无数量上限的线程池的调度器,比Schedulers.newThread()更效率
                 .observeOn(AndroidSchedulers.mainThread())//消费的线程,指定的操作将在 Android 主线程运行
                 .subscribe(new Observer<SigninBeans>() {//订阅观察者
@@ -225,26 +244,28 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
                         if (signinAdapter != null && signinAdapter.getItemCount() == 0) {
                             showError();
                         }
+                        Log.d(TAG, "onError: " + e.toString());
                     }
 
                     //
                     @Override
                     public void onNext(SigninBeans registBean) {
-                        if (registBean != null) {
-                            aCache.remove(Constants.SIGIN_TAG);
-                            // 保存12个小时
-                            aCache.put(Constants.SIGIN_TAG, registBean, 43200);
-                            setAdapter(registBean);
-                            // 保存请求的日期
-                            SPUtils.putString(Constants.ACACHE_DATA_SIGN, TimeUtil.getData());
-                            // 刷新结束
-                            mIsLoading = false;
-                        }
+                        Log.d(TAG, "onNext: " + registBean.getCode() + "--" + registBean.getMessage() + "--" + registBean.getResult().size());
 
-                        //构造器中，第一个参数表示列数或者行数，第二个参数表示滑动方向,瀑布流
-                        //                        bindingContentView.listOne.setLayoutManager(new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL));
-                        // GridView
-                        //                        bindingContentView.listOne.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                        if (registBean != null && (registBean.getCode().equals("1"))) {
+                            if (registBean.getResult().size() > 0) {
+                                aCache.remove(Constants.SIGIN_TAG);
+                                // 保存60s
+                                aCache.put(Constants.SIGIN_TAG, registBean, 60);
+                                setAdapter(registBean);
+                                // 保存请求的日期
+                                SPUtils.putString(Constants.ACACHE_DATA_REGIST, TimeUtil.getData());
+                                // 刷新结束-
+                                mIsLoading = false;
+                            } else {
+                                ToastUtils.ShortToast(getActivity(), "没有获取到数据！");
+                            }
+                        }
                     }
                 });
         addSubscription(subscription);//保存订阅
@@ -276,6 +297,27 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
         bindingView.btnTosend.setOnClickListener(this);
         bindingView.itemQrcode.setOnClickListener(this);
         bindingView.floatActionButton.setOnClickListener(this);
+
+        tvSearch.setOnClickListener(this);
+
+        //搜索监听 修改搜索/取消状态
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                tvSearch.setText("搜索");
+                isSearch = true;
+            }
+        });
 
     }
 
@@ -340,7 +382,6 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
                 }
 
                 if (!employeeid.equals("")) {
-                    qrcodeImg = bindingView.imgQrcode;
                     //调用二维码代码
                     try {
                         qrcodeBitmap = EncodingHandler.createQRCode(employeeid, DpUtils.dp2px(activity, 300));//设置225dp
@@ -367,6 +408,28 @@ public class SigninFragment extends BaseFragment<FragmentSigninBinding> implemen
                 intent.setClass(getActivity(), QrcodeCaptureActivity.class);//QrcodeCaptureActivity.class CodeInputActivity.class
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+
+                break;
+            case R.id.tv_search://搜索
+
+                //搜索数据
+                if (isSearch) {
+                    strSearch = etSearch.getText().toString().trim();
+                    if (TextUtils.isEmpty(strSearch)) {
+                        ToastUtils.ShortToast(getActivity(), "搜索内容不能为空！");
+                        break;
+                    }
+                    Log.d(TAG, "onClick: strSearch=" + strSearch);
+                    isSearch = false;
+                    tvSearch.setText("取消");
+                    loadSignData();
+                } else {
+                    tvSearch.setText("搜索");
+                    etSearch.setText("");
+                    strSearch = "";
+                    isSearch = true;
+                    loadSignData();
+                }
 
                 break;
         }

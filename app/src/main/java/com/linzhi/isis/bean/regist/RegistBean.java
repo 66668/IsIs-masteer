@@ -52,4 +52,13 @@ public class RegistBean extends BaseObservable implements Serializable {
         this.result = result;
         notifyPropertyChanged(BR.result);
     }
+
+    @Override
+    public String toString() {
+        return "RegistBean{" +
+                "code='" + code + '\'' +
+                ", message='" + message + '\'' +
+                ", result.size()=" + result.size() +
+                '}';
+    }
 }
