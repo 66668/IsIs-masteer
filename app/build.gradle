@@ -61,5 +61,6 @@ dependencies {
     //okhttp需要使用
     //recyclerview
     compile 'com.android.support:recyclerview-v7:25.0.0'
+    //二维码
     compile files('libs/zxing.jar')
 }
